@@ -4,6 +4,10 @@ This is a personal QMK fork (branch `miryoku`) whose purpose is the `nikroulah`
 custom Miryoku keymap for the **bastardkb skeletyl (v1/elitec)**. This file
 documents that work so future sessions don't have to re-derive it.
 
+**No PRs, ever.** This fork is personal and never upstreams — do not open pull
+requests (to `upstream` qmk/qmk_firmware, the `nikroulah` fork's default branch,
+or anywhere). Commit and push to `origin/miryoku` only when asked.
+
 ## Board facts
 
 - Keyboard target: `bastardkb/skeletyl/v1/elitec`
