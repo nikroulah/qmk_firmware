@@ -387,3 +387,93 @@ U_UND,             U_CUT,             U_CPY,             U_PST,             U_RD
 KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           U_NU,              U_NU,              KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           \
 U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
 U_NP,              U_NP,              KC_BTN3,           KC_BTN1,           KC_BTN2,           KC_BTN2,           KC_BTN1,           KC_BTN3,           U_NP,              U_NP
+
+
+// ============================================================================
+// nikroulah custom layout
+// Source: keyboards/bastardkb/skeletyl/keymaps/nikroulah/keymap.json
+// - Home-row mods in SCAG order (Shift on the pinkies, Gui on the index),
+//   right hand uses RGUI/RALT/RCTL/RSFT.
+// - Outer-pinky bottom-row keys are LT(U_BUTTON, ...).
+// - Clipboard keys use the U_CPY/U_CUT/U_PST/U_UND macros, so they follow
+//   MIRYOKU_CLIPBOARD_MAC (Cmd+C/X/V/Z) from manna-harbour_miryoku.h.
+// Miryoku layer-slot assignments (set in custom_config.h):
+//   BASE   base alphas
+//   NAV    arrows + clipboard      (opened by the Spc thumb)
+//   NUM    numbers (left hand)     (opened by the Bspc thumb)
+//   MOUSE  mouse                   (opened by the Tab thumb)
+//   SYM    symbols (left hand)     (opened by the Ent thumb)
+//   MEDIA  media transport         (opened by the Del thumb)
+//   EXTRA  numbers (right hand) + gateway, opened by the Esc thumb; its two
+//          MO() keys open the TAP (symbols) and FUN (function) layers. Must be
+//          a lower layer number than TAP/FUN or it would shadow them.
+//   TAP    symbols (right hand)    (opened with MO from the EXTRA layer)
+//   FUN    function keys (right hand) + screenshots (opened with MO from EXTRA)
+//   BUTTON modifiers + clipboard   (opened by the outer-pinky LT keys)
+// ============================================================================
+
+#define MIRYOKU_ALTERNATIVES_BASE_NIKROULAH \
+KC_Q,              KC_W,              KC_E,              KC_R,              KC_T,              KC_Y,              KC_U,              KC_I,              KC_O,              KC_P,              \
+LSFT_T(KC_A),      LCTL_T(KC_S),      LALT_T(KC_D),      LGUI_T(KC_F),      KC_G,              KC_H,              RGUI_T(KC_J),      RALT_T(KC_K),      RCTL_T(KC_L),      RSFT_T(KC_QUOT),   \
+LT(U_BUTTON,KC_Z), KC_X,              KC_C,              KC_V,              KC_B,              KC_N,              KC_M,              KC_COMM,           KC_DOT,            LT(U_BUTTON,KC_SLSH),\
+U_NP,              U_NP,              LT(U_EXTRA,KC_ESC),LT(U_NAV,KC_SPC),  LT(U_MOUSE,KC_TAB),LT(U_SYM,KC_ENT),  LT(U_NUM,KC_BSPC), LT(U_MEDIA,KC_DEL),U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_NAV_NIKROULAH \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_NA,              U_UND,             \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           U_NA,              U_PST,             KC_LEFT,           KC_DOWN,           KC_RGHT,           U_NA,              \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
+U_NP,              U_NP,              U_NA,              KC_TRNS,           U_NA,              KC_ENT,            KC_BSPC,           KC_DEL,            U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_NUM_NIKROULAH \
+KC_LBRC,           KC_7,              KC_8,              KC_9,              KC_RBRC,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+KC_SCLN,           KC_4,              KC_5,              KC_6,              KC_EQL,            U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
+KC_GRV,            KC_1,              KC_2,              KC_3,              KC_BSLS,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+U_NP,              U_NP,              KC_DOT,            KC_0,              KC_MINS,           U_NA,              KC_TRNS,           U_NA,              U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_MOUSE_NIKROULAH \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_MS_U,           U_NA,              U_UND,             \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           U_NA,              U_PST,             KC_MS_L,           KC_MS_D,           KC_MS_R,           U_NA,              \
+U_NA,              KC_ACL0,           KC_ACL1,           KC_ACL2,           U_NA,              U_NA,              KC_WH_L,           KC_WH_D,           KC_WH_U,           KC_WH_R,           \
+U_NP,              U_NP,              U_NA,              U_NA,              KC_TRNS,           KC_BTN2,           KC_BTN1,           KC_BTN3,           U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_SYM_NIKROULAH \
+KC_LCBR,           KC_AMPR,           KC_ASTR,           KC_LPRN,           KC_RCBR,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+KC_COLN,           KC_DLR,            KC_PERC,           KC_CIRC,           KC_PLUS,           U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
+KC_TILD,           KC_EXLM,           KC_AT,             KC_HASH,           KC_PIPE,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+U_NP,              U_NP,              KC_LPRN,           KC_RPRN,           KC_UNDS,           KC_TRNS,           U_NA,              U_NA,              U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_MEDIA_NIKROULAH \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              QK_BOOT,           U_NA,              U_NA,              U_NA,              U_NA,              \
+KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+U_NP,              U_NP,              KC_MSTP,           KC_MPLY,           KC_MUTE,           U_NA,              U_NA,              KC_TRNS,           U_NP,              U_NP
+
+// Gateway layer (right-hand numbers), opened by the Esc thumb. Lives in the
+// EXTRA slot so it is a *lower* layer number than the TAP/FUN layers its MO()
+// keys reach -- otherwise this layer would shadow them (QMK resolves from the
+// highest active layer down).
+#define MIRYOKU_ALTERNATIVES_EXTRA_NIKROULAH \
+MO(U_TAP),         U_NA,              U_NA,              U_NA,              U_NA,              KC_LBRC,           KC_7,              KC_8,              KC_9,              KC_RBRC,           \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           U_NA,              KC_EQL,            KC_4,              KC_5,              KC_6,              KC_SCLN,           \
+MO(U_FUN),         U_NA,              U_NA,              U_NA,              U_NA,              KC_BSLS,           KC_1,              KC_2,              KC_3,              KC_GRV,            \
+U_NP,              U_NP,              KC_TRNS,           U_NA,              U_NA,              KC_MINS,           KC_DOT,            KC_0,              U_NP,              U_NP
+
+// Right-hand symbols, reached with MO from the EXTRA gateway. In the TAP slot
+// (layer 2) so it outranks the EXTRA gateway (layer 1) and shows through.
+#define MIRYOKU_ALTERNATIVES_TAP_NIKROULAH \
+KC_TRNS,           U_NA,              U_NA,              U_NA,              U_NA,              KC_LCBR,           KC_AMPR,           KC_ASTR,           KC_LPRN,           KC_RCBR,           \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_PLUS,           KC_DLR,            KC_PERC,           KC_CIRC,           KC_COLN,           \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_PIPE,           KC_EXLM,           KC_AT,             KC_HASH,           KC_TILD,           \
+U_NP,              U_NP,              KC_TRNS,           U_NA,              U_NA,              KC_UNDS,           KC_LPRN,           KC_RPRN,           U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_FUN_NIKROULAH \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_PSCR,           KC_F7,             KC_F8,             KC_F9,             KC_F12,            \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              LCTL(LSFT(LGUI(KC_4))),KC_F4,         KC_F5,             KC_F6,             KC_F11,            \
+KC_TRNS,           U_NA,              U_NA,              U_NA,              U_NA,              LCTL(LSFT(LGUI(KC_3))),KC_F1,         KC_F2,             KC_F3,             KC_F10,            \
+U_NP,              U_NP,              KC_TRNS,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NP,              U_NP
+
+#define MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH \
+U_UND,             U_NA,              U_NA,              U_CPY,             U_CUT,             U_CUT,             U_CPY,             U_NA,              U_NA,              U_UND,             \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           U_PST,             U_PST,             KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NP,              U_NP

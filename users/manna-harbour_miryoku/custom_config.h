@@ -5,3 +5,21 @@
 
 #pragma once
 
+// nikroulah custom layout (from keyboards/bastardkb/skeletyl/keymaps/nikroulah).
+// Clipboard keys (U_CPY/U_CUT/U_PST/U_UND/U_RDO) become Cmd+C/X/V/Z/Shift-Cmd-Z.
+#define MIRYOKU_CLIPBOARD_MAC
+
+// Map every layer slot to the nikroulah alternatives defined in
+// miryoku_babel/miryoku_layer_alternatives.h. See the header comment there for
+// what each slot holds and how it is reached.
+#define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_NIKROULAH
+#define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_EXTRA_NIKROULAH
+#define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_TAP_NIKROULAH
+#define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH
+#define MIRYOKU_LAYER_NAV    MIRYOKU_ALTERNATIVES_NAV_NIKROULAH
+#define MIRYOKU_LAYER_MOUSE  MIRYOKU_ALTERNATIVES_MOUSE_NIKROULAH
+#define MIRYOKU_LAYER_MEDIA  MIRYOKU_ALTERNATIVES_MEDIA_NIKROULAH
+#define MIRYOKU_LAYER_NUM    MIRYOKU_ALTERNATIVES_NUM_NIKROULAH
+#define MIRYOKU_LAYER_SYM    MIRYOKU_ALTERNATIVES_SYM_NIKROULAH
+#define MIRYOKU_LAYER_FUN    MIRYOKU_ALTERNATIVES_FUN_NIKROULAH
+

@@ -89,3 +89,48 @@ combo_t key_combos[COMBO_COUNT] = {
   COMBO(thumbcombos_fun, KC_APP)
 };
 #endif
+
+
+// qmk_viewer live indicator (https://github.com/thooams/qmk_viewer)
+// Sends a 32-byte raw HID report (byte 0 = active layer, remaining bytes = a
+// bitmap of pressed matrix keys) on every layer change and on every key
+// press/release. The layer-change sends drive qmk_viewer's layer indicator; the
+// per-key sends drive its live keypress highlight. Event-driven rather than
+// polled, so there is no idle USB traffic. Only built when RAW_ENABLE is set
+// (see custom_rules.mk), so other Miryoku builds are unaffected.
+#if defined (RAW_ENABLE)
+#include "raw_hid.h"
+
+#define U_QMK_VIEWER_REPORT_SIZE 32
+
+void raw_hid_receive(uint8_t *data, uint8_t length) {
+  // qmk_viewer only reads keyboard state; nothing to handle on receive.
+}
+
+static void u_qmk_viewer_send(uint8_t layer) {
+  uint8_t report[U_QMK_VIEWER_REPORT_SIZE] = {0};
+  report[0] = layer;
+  for (uint8_t i = 0; i < MATRIX_ROWS * MATRIX_COLS && i < (U_QMK_VIEWER_REPORT_SIZE - 1) * 8; i++) {
+    if (matrix_is_on(i / MATRIX_COLS, i % MATRIX_COLS)) {
+      report[1 + (i / 8)] |= 1 << (i % 8);
+    }
+  }
+  raw_hid_send(report, U_QMK_VIEWER_REPORT_SIZE);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  u_qmk_viewer_send(get_highest_layer(state));
+  return state;
+}
+
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+  u_qmk_viewer_send(get_highest_layer(state));
+  return state;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // The matrix is already updated for this event, so the bitmap reflects it.
+  u_qmk_viewer_send(get_highest_layer(layer_state));
+  return true;
+}
+#endif
