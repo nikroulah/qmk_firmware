@@ -49,21 +49,6 @@ MIRYOKU_LAYER_LIST
 };
 
 
-// Per-key tapping-term hook for the home-row Shift mod-taps (A and '), kept so
-// the term is easy to bump if slow typing starts registering them as Shift
-// (accidental capitals). Currently at the default 200ms. Requires
-// TAPPING_TERM_PER_KEY (set in config.h).
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case LSFT_T(KC_A):
-    case RSFT_T(KC_QUOT):
-      return 200;
-    default:
-      return TAPPING_TERM;
-  }
-}
-
-
 // shift functions
 
 const key_override_t capsword_key_override = ko_make_basic(MOD_MASK_SHIFT, CW_TOGG, KC_CAPS);

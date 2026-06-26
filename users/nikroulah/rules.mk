@@ -2,8 +2,8 @@
 #
 # Mirrors users/manna-harbour_miryoku/rules.mk (the miryoku feature set), but
 # points introspection at our own nikroulah.c (a verbatim copy of the engine
-# keymap C with our get_tapping_term + qmk_viewer additions) and turns on
-# RAW_ENABLE for the qmk_viewer indicator. The miryoku post_rules.mk
+# keymap C with our qmk_viewer additions) and turns on RAW_ENABLE for the
+# qmk_viewer indicator. The miryoku post_rules.mk
 # (MIRYOKU_* make-var -> -D handling) is reused from the pristine engine dir.
 
 MOUSEKEY_ENABLE = yes

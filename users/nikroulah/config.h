@@ -14,11 +14,6 @@
 // Clipboard keys (U_CPY/U_CUT/U_PST/U_UND/U_RDO) become Cmd+C/X/V/Z/Shift-Cmd-Z.
 #define MIRYOKU_CLIPBOARD_MAC
 
-// Longer tapping term on the home-row Shift mod-taps (A and ') only, to cut
-// down on accidental capitals when typing slowly. See get_tapping_term() in
-// nikroulah.c; everything else stays at TAPPING_TERM (200).
-#define TAPPING_TERM_PER_KEY
-
 // Caps Word: pressing BOTH home-row Shift mod-taps (A + ') together turns it on,
 // so all-caps words don't require holding Shift. (There is also a CW_TOGG key on
 // the BUTTON layer's V/M keys.) Auto-turns-off at the next word break.
