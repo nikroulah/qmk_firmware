@@ -52,7 +52,7 @@
 #define MK_W_INTERVAL_UNMOD 100
 #define MK_W_OFFSET_0       1    // ACL0 = slow scroll
 #define MK_W_INTERVAL_0     125
-#define MK_W_OFFSET_1       1   // ACL1 = medium scroll
+#define MK_W_OFFSET_1       1    // ACL1 = medium scroll
 #define MK_W_INTERVAL_1     75
 #define MK_W_OFFSET_2       1    // ACL2 = fast scroll
 #define MK_W_INTERVAL_2     50

@@ -74,7 +74,6 @@ qmk flash -kb <board> -km nikroulah
 | `layouts/community/split_3x5_{3,2}/nikroulah/` | `config.h` (`LAYOUT_miryoku` → `LAYOUT_split_3x5_{3,2}`) + empty `keymap.c`; the sweep dir also has `rules.mk` (`MIRYOKU_KLUDGE_THUMBCOMBOS=yes`). Mirror the `manna-harbour_miryoku` community dirs. |
 | `users/nikroulah/qmk_viewer_maps/{skeletyl,sweep}/keymap.json` | Render sources for qmk_viewer (see below). **Not daily-driver keymaps.** |
 | `users/nikroulah/qmk_viewer_maps/gen_keymap_json.py` | Generator for **both** render JSONs. **Parses the macros out of `miryoku_nikroulah_alternatives.h`** (no hardcoded copy → can't drift). |
-| `users/nikroulah/nikroulah-sweep-configurator.json` | The sweep's editable Configurator-format design doc. Superseded by the Miryoku build for actual firmware; kept for re-import/iteration in config.qmk.fm. |
 
 `users/manna-harbour_miryoku/` is **pristine** — never edit it. All
 customization lives in `users/nikroulah/`, which reuses the engine via relative
@@ -197,19 +196,36 @@ can't tap-dance), drops the right thumbs per board, and emits layers in enum
 order. Then rebuild the firmware to confirm the macros still compile:
 
 ```bash
-qmk compile -kb bastardkb/skeletyl/v1/elitec -km nikroulah
+qmk compile -kb bastardkb/skeletyl/promicro -km nikroulah
 qmk compile -kb ferris/sweep -km nikroulah
 ```
+
+## Regenerating the readme layer SVGs
+
+`readme.md` embeds per-layer images from `users/nikroulah/docs/img/<board>/<layer>.svg`.
+They're rendered by `users/nikroulah/docs/gen_layer_images.py` (uses
+[keymap-drawer](https://github.com/caksoylar/keymap-drawer)) **from the render
+JSONs**, so regenerate the JSONs *first* (above) — then the SVGs can't drift from
+the firmware either. The generator names the layers, drops the blank EXTRA/TAP
+slots, draws a clean split-ortho board, and prettifies legends to glyphs (mods →
+⌘⇧⌥⌃, arrows → ←↓↑→ including modifier+arrow combos like `Ctl+RGHT` → `⌃→`).
+
+keymap-drawer isn't a repo dependency; install it ad hoc and run:
+
+```bash
+python3 -m venv /tmp/kmd-venv
+/tmp/kmd-venv/bin/pip install keymap-drawer
+/tmp/kmd-venv/bin/python3 users/nikroulah/docs/gen_layer_images.py
+```
+
+So the full "edited a layout macro" sequence is: edit
+`miryoku_nikroulah_alternatives.h` → regen the JSONs → regen the SVGs →
+`qmk compile` both boards.
 
 ## Gotchas
 
 - QMK Configurator emits `LCSG(kc)` for mac screenshots — **not a valid QMK
-  macro**. The firmware macros use `LCTL(LSFT(LGUI(kc)))`; the Configurator
-  design JSON (`users/nikroulah/nikroulah-sweep-configurator.json`) keeps `LCSG`
-  (round-trips in config.qmk.fm but won't compile as-is).
-- Configurator JSON **can't express tap dances**. The bootloader key uses
-  `TD(U_TD_BOOT)` (Miryoku's built-in double-tap-to-boot) in the firmware, but a
-  plain `QK_BOOT` in that Configurator design JSON.
+  macro**. The firmware macros use `LCTL(LSFT(LGUI(kc)))` instead.
 - Features compiled in (`rules.mk`): **Tap Dance** (the boot key). **Caps Word**
   is reachable two ways: `BOTH_SHIFTS_TURNS_ON_CAPS_WORD` (press both home-row
   Shifts A+' together) and a `CW_TOGG` key on the BUTTON layer's V and M keys.
