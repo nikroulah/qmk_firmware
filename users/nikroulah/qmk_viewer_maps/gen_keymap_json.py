@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """Generate qmk_viewer render-source keymap.json files for the nikroulah
-Miryoku layouts, by PARSING the macros out of miryoku_layer_alternatives.h so
-the JSON can never drift from the firmware.
+Miryoku layouts, by PARSING the macros out of miryoku_nikroulah_alternatives.h
+so the JSON can never drift from the firmware.
 
 Emits, in Miryoku enum order (so qmk_viewer's layer number matches the
-firmware's raw-HID indicator):
-  - bastardkb/skeletyl/v1/elitec  (split_3x5_3)  <- *_NIKROULAH macros
-  - ferris/sweep                  (split_3x5_2)  <- *_SWEEP macros (+ reused BUTTON)
+firmware's raw-HID indicator), into users/nikroulah/qmk_viewer_maps/<board>/:
+  - skeletyl  (bastardkb/skeletyl/v1/elitec, split_3x5_3)  <- *_NIKROULAH macros
+  - sweep     (ferris/sweep, split_3x5_2)                  <- *_SWEEP macros (+ reused BUTTON)
 
-Run:  python3 keyboards/bastardkb/skeletyl/keymaps/nikroulah/gen_keymap_json.py
+Run:  python3 users/nikroulah/qmk_viewer_maps/gen_keymap_json.py
 """
 import json, os, re
 
-REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", ".."))
-ALT = os.path.join(REPO, "users/manna-harbour_miryoku/miryoku_babel/miryoku_layer_alternatives.h")
+REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+ALT = os.path.join(REPO, "users/nikroulah/miryoku_nikroulah_alternatives.h")
 
 ENUM = {"U_BASE":0,"U_EXTRA":1,"U_TAP":2,"U_BUTTON":3,"U_NAV":4,
         "U_MOUSE":5,"U_MEDIA":6,"U_NUM":7,"U_SYM":8,"U_FUN":9}
@@ -91,9 +91,9 @@ def main():
 
     targets = [
         ("bastardkb/skeletyl/v1/elitec", "LAYOUT_split_3x5_3", "NIKROULAH", KEEP_3,
-         False, "keyboards/bastardkb/skeletyl/keymaps/nikroulah/keymap.json"),
+         False, "users/nikroulah/qmk_viewer_maps/skeletyl/keymap.json"),
         ("ferris/sweep", "LAYOUT_split_3x5_2", "SWEEP", KEEP_2,
-         True, "keyboards/ferris/sweep/keymaps/nikroulah/keymap.json"),
+         True, "users/nikroulah/qmk_viewer_maps/sweep/keymap.json"),
     ]
     for kb, layout, suffix, keep, reuse_button, relpath in targets:
         out = {
