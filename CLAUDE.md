@@ -17,7 +17,13 @@ outside those two dirs are this `CLAUDE.md`.
 
 **No PRs, ever.** This fork is personal and never upstreams — do not open pull
 requests (to `upstream` qmk/qmk_firmware, the `nikroulah` fork's default branch,
-or anywhere). Commit and push to `origin/miryoku` only when asked.
+or anywhere). Commit and push only when asked.
+
+**Keep `master` and `miryoku` in sync.** Both branches carry the same nikroulah
+work and must be kept identical in content (their trees match; only the tip
+commit hashes differ). Whenever you commit here, apply the same change to both —
+commit on one, cherry-pick onto the other, and push both (`origin/master` and
+`origin/miryoku`). After syncing, `git diff master miryoku` should be empty.
 
 ## QMK version
 
