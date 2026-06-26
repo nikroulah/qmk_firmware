@@ -290,8 +290,8 @@
       "KC_3",
       "KC_SCLN",
       "KC_NO",
-      "KC_DOT",
       "KC_BSLS",
+      "KC_DOT",
       "KC_0"
     ],
     [
@@ -326,8 +326,8 @@
       "KC_HASH",
       "KC_COLN",
       "KC_NO",
-      "KC_LPRN",
       "KC_PIPE",
+      "KC_LPRN",
       "KC_RPRN"
     ],
     [

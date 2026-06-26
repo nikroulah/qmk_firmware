@@ -1,0 +1,3 @@
+# The layer-reference SVGs are committed artifacts; the repo-root
+# .gitignore ignores *.svg, so re-include them here.
+!*.svg
