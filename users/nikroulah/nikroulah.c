@@ -49,14 +49,15 @@ MIRYOKU_LAYER_LIST
 };
 
 
-// Longer tapping term on the home-row Shift mod-taps (A and ') so slow typing
-// is less likely to register them as Shift (accidental capitals). Requires
-// TAPPING_TERM_PER_KEY (set in custom_config.h).
+// Per-key tapping-term hook for the home-row Shift mod-taps (A and '), kept so
+// the term is easy to bump if slow typing starts registering them as Shift
+// (accidental capitals). Currently at the default 200ms. Requires
+// TAPPING_TERM_PER_KEY (set in config.h).
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case LSFT_T(KC_A):
     case RSFT_T(KC_QUOT):
-      return 250;
+      return 200;
     default:
       return TAPPING_TERM;
   }
