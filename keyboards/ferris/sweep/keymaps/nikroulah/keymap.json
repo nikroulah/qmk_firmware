@@ -2,9 +2,9 @@
   "version": 1,
   "notes": "Generated from miryoku_layer_alternatives.h (see gen_keymap_json.py). Render source for qmk_viewer; layer order matches the Miryoku enum.",
   "documentation": "",
-  "keyboard": "bastardkb/skeletyl/v1/elitec",
+  "keyboard": "ferris/sweep",
   "keymap": "nikroulah",
-  "layout": "LAYOUT_split_3x5_3",
+  "layout": "LAYOUT_split_3x5_2",
   "layers": [
     [
       "LT(8,KC_Q)",
@@ -37,16 +37,12 @@
       "KC_COMM",
       "KC_DOT",
       "LT(3,KC_SLSH)",
-      "LT(7,KC_ESC)",
-      "LT(4,KC_SPC)",
-      "LT(5,KC_TAB)",
-      "LT(9,KC_ENT)",
-      "LT(6,KC_SPC)",
-      "KC_BSPC"
+      "LT(4,KC_ESC)",
+      "LT(5,KC_ENT)",
+      "LT(9,KC_SPC)",
+      "LT(6,KC_BSPC)"
     ],
     [
-      "KC_NO",
-      "KC_NO",
       "KC_NO",
       "KC_NO",
       "KC_NO",
@@ -83,8 +79,6 @@
       "KC_NO"
     ],
     [
-      "KC_NO",
-      "KC_NO",
       "KC_NO",
       "KC_NO",
       "KC_NO",
@@ -150,8 +144,6 @@
       "CW_TOGG",
       "KC_NO",
       "QK_BOOT",
-      "KC_NO",
-      "KC_NO",
       "KC_NO",
       "KC_NO",
       "KC_NO",
@@ -189,11 +181,9 @@
       "KC_PGDN",
       "KC_PGUP",
       "KC_END",
-      "KC_NO",
       "KC_TRNS",
       "KC_NO",
       "KC_ENT",
-      "KC_SPC",
       "KC_BSPC"
     ],
     [
@@ -228,11 +218,9 @@
       "KC_WH_U",
       "KC_WH_R",
       "KC_NO",
-      "KC_NO",
       "KC_TRNS",
-      "KC_BTN2",
       "KC_BTN1",
-      "KC_BTN3"
+      "KC_BTN2"
     ],
     [
       "KC_NO",
@@ -265,12 +253,10 @@
       "KC_NO",
       "KC_NO",
       "KC_NO",
-      "KC_NO",
       "KC_MPLY",
       "KC_MUTE",
       "KC_NO",
-      "KC_TRNS",
-      "KC_NO"
+      "KC_TRNS"
     ],
     [
       "KC_NO",
@@ -303,11 +289,9 @@
       "KC_2",
       "KC_3",
       "KC_SCLN",
-      "KC_TRNS",
       "KC_NO",
-      "KC_NO",
-      "KC_BSLS",
       "KC_DOT",
+      "KC_BSLS",
       "KC_0"
     ],
     [
@@ -342,10 +326,8 @@
       "KC_HASH",
       "KC_COLN",
       "KC_NO",
-      "KC_NO",
-      "KC_NO",
-      "KC_PIPE",
       "KC_LPRN",
+      "KC_PIPE",
       "KC_RPRN"
     ],
     [
@@ -354,7 +336,7 @@
       "KC_F8",
       "KC_F9",
       "KC_PSCR",
-      "KC_NO",
+      "QK_BOOT",
       "KC_NO",
       "KC_NO",
       "KC_NO",
@@ -381,9 +363,7 @@
       "KC_NO",
       "KC_NO",
       "KC_NO",
-      "KC_NO",
       "KC_TRNS",
-      "KC_NO",
       "KC_NO"
     ]
   ],

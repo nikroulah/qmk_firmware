@@ -49,6 +49,20 @@ MIRYOKU_LAYER_LIST
 };
 
 
+// Longer tapping term on the home-row Shift mod-taps (A and ') so slow typing
+// is less likely to register them as Shift (accidental capitals). Requires
+// TAPPING_TERM_PER_KEY (set in custom_config.h).
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case LSFT_T(KC_A):
+    case RSFT_T(KC_QUOT):
+      return 250;
+    default:
+      return TAPPING_TERM;
+  }
+}
+
+
 // shift functions
 
 const key_override_t capsword_key_override = ko_make_basic(MOD_MASK_SHIFT, CW_TOGG, KC_CAPS);
@@ -92,12 +106,13 @@ combo_t key_combos[COMBO_COUNT] = {
 
 
 // qmk_viewer live indicator (https://github.com/thooams/qmk_viewer)
-// Sends a 32-byte raw HID report (byte 0 = active layer, remaining bytes = a
-// bitmap of pressed matrix keys) on every layer change and on every key
-// press/release. The layer-change sends drive qmk_viewer's layer indicator; the
-// per-key sends drive its live keypress highlight. Event-driven rather than
-// polled, so there is no idle USB traffic. Only built when RAW_ENABLE is set
-// (see custom_rules.mk), so other Miryoku builds are unaffected.
+// Sends a 32-byte raw HID report at most every 50ms (byte 0 = active layer,
+// remaining bytes = a bitmap of pressed matrix keys) from matrix_scan_user.
+// Polling here -- rather than sending from process_record_user on every key --
+// keeps raw_hid_send (which blocks until the host drains the endpoint) off the
+// keystroke path and caps it to ~20 sends/sec, so typing stays responsive
+// regardless of speed. The viewer updates at ~20fps, which is plenty. Only
+// built when RAW_ENABLE is set (see custom_rules.mk); other builds unaffected.
 #if defined (RAW_ENABLE)
 #include "raw_hid.h"
 
@@ -107,30 +122,20 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
   // qmk_viewer only reads keyboard state; nothing to handle on receive.
 }
 
-static void u_qmk_viewer_send(uint8_t layer) {
+void matrix_scan_user(void) {
+  static uint16_t last_sent = 0;
+  if (timer_elapsed(last_sent) < 50) {
+    return;
+  }
+  last_sent = timer_read();
+
   uint8_t report[U_QMK_VIEWER_REPORT_SIZE] = {0};
-  report[0] = layer;
+  report[0] = get_highest_layer(layer_state);
   for (uint8_t i = 0; i < MATRIX_ROWS * MATRIX_COLS && i < (U_QMK_VIEWER_REPORT_SIZE - 1) * 8; i++) {
     if (matrix_is_on(i / MATRIX_COLS, i % MATRIX_COLS)) {
       report[1 + (i / 8)] |= 1 << (i % 8);
     }
   }
   raw_hid_send(report, U_QMK_VIEWER_REPORT_SIZE);
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-  u_qmk_viewer_send(get_highest_layer(state));
-  return state;
-}
-
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-  u_qmk_viewer_send(get_highest_layer(state));
-  return state;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // The matrix is already updated for this event, so the bitmap reflects it.
-  u_qmk_viewer_send(get_highest_layer(layer_state));
-  return true;
 }
 #endif

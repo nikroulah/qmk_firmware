@@ -1,103 +1,121 @@
-import json
+#!/usr/bin/env python3
+"""Generate qmk_viewer render-source keymap.json files for the nikroulah
+Miryoku layouts, by PARSING the macros out of miryoku_layer_alternatives.h so
+the JSON can never drift from the firmware.
 
-# Each layer = 40 tokens (the 4x10 Miryoku macro grid) copied verbatim from the
-# MIRYOKU_ALTERNATIVES_*_NIKROULAH macros in miryoku_layer_alternatives.h.
-slots = {
-"BASE": [
-"KC_Q","KC_W","KC_E","KC_R","KC_T","KC_Y","KC_U","KC_I","KC_O","KC_P",
-"LSFT_T(KC_A)","LCTL_T(KC_S)","LALT_T(KC_D)","LGUI_T(KC_F)","KC_G","KC_H","RGUI_T(KC_J)","RALT_T(KC_K)","RCTL_T(KC_L)","RSFT_T(KC_QUOT)",
-"LT(U_BUTTON,KC_Z)","KC_X","KC_C","KC_V","KC_B","KC_N","KC_M","KC_COMM","KC_DOT","LT(U_BUTTON,KC_SLSH)",
-"U_NP","U_NP","LT(U_EXTRA,KC_ESC)","LT(U_NAV,KC_SPC)","LT(U_MOUSE,KC_TAB)","LT(U_SYM,KC_ENT)","LT(U_NUM,KC_BSPC)","LT(U_MEDIA,KC_DEL)","U_NP","U_NP",
-],
-"TAP": [
-"KC_TRNS","U_NA","U_NA","U_NA","U_NA","KC_LCBR","KC_AMPR","KC_ASTR","KC_LPRN","KC_RCBR",
-"U_NA","U_NA","U_NA","U_NA","U_NA","KC_PLUS","KC_DLR","KC_PERC","KC_CIRC","KC_COLN",
-"U_NA","U_NA","U_NA","U_NA","U_NA","KC_PIPE","KC_EXLM","KC_AT","KC_HASH","KC_TILD",
-"U_NP","U_NP","KC_TRNS","U_NA","U_NA","KC_UNDS","KC_LPRN","KC_RPRN","U_NP","U_NP",
-],
-"EXTRA": [
-"MO(U_TAP)","U_NA","U_NA","U_NA","U_NA","KC_LBRC","KC_7","KC_8","KC_9","KC_RBRC",
-"KC_LSFT","KC_LCTL","KC_LALT","KC_LGUI","U_NA","KC_EQL","KC_4","KC_5","KC_6","KC_SCLN",
-"MO(U_FUN)","U_NA","U_NA","U_NA","U_NA","KC_BSLS","KC_1","KC_2","KC_3","KC_GRV",
-"U_NP","U_NP","KC_TRNS","U_NA","U_NA","KC_MINS","KC_DOT","KC_0","U_NP","U_NP",
-],
-"BUTTON": [
-"U_UND","U_NA","U_NA","U_CPY","U_CUT","U_CUT","U_CPY","U_NA","U_NA","U_UND",
-"KC_LSFT","KC_LCTL","KC_LALT","KC_LGUI","U_PST","U_PST","KC_RGUI","KC_RALT","KC_RCTL","KC_RSFT",
-"U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA",
-"U_NP","U_NP","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NP","U_NP",
-],
-"NAV": [
-"U_NA","U_NA","U_NA","U_NA","U_NA","U_CUT","U_CPY","KC_UP","U_NA","U_UND",
-"KC_LSFT","KC_LCTL","KC_LALT","KC_LGUI","U_NA","U_PST","KC_LEFT","KC_DOWN","KC_RGHT","U_NA",
-"U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","KC_HOME","KC_PGDN","KC_PGUP","KC_END",
-"U_NP","U_NP","U_NA","KC_TRNS","U_NA","KC_ENT","KC_BSPC","KC_DEL","U_NP","U_NP",
-],
-"MOUSE": [
-"U_NA","U_NA","U_NA","U_NA","U_NA","U_CUT","U_CPY","KC_MS_U","U_NA","U_UND",
-"KC_LSFT","KC_LCTL","KC_LALT","KC_LGUI","U_NA","U_PST","KC_MS_L","KC_MS_D","KC_MS_R","U_NA",
-"U_NA","KC_ACL0","KC_ACL1","KC_ACL2","U_NA","U_NA","KC_WH_L","KC_WH_D","KC_WH_U","KC_WH_R",
-"U_NP","U_NP","U_NA","U_NA","KC_TRNS","KC_BTN2","KC_BTN1","KC_BTN3","U_NP","U_NP",
-],
-"MEDIA": [
-"U_NA","U_NA","U_NA","U_NA","U_NA","QK_BOOT","U_NA","U_NA","U_NA","U_NA",
-"KC_MRWD","KC_VOLD","KC_VOLU","KC_MFFD","U_NA","U_NA","KC_RGUI","KC_RALT","KC_RCTL","KC_RSFT",
-"U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA","U_NA",
-"U_NP","U_NP","KC_MSTP","KC_MPLY","KC_MUTE","U_NA","U_NA","KC_TRNS","U_NP","U_NP",
-],
-"NUM": [
-"KC_LBRC","KC_7","KC_8","KC_9","KC_RBRC","U_NA","U_NA","U_NA","U_NA","U_NA",
-"KC_SCLN","KC_4","KC_5","KC_6","KC_EQL","U_NA","KC_RGUI","KC_RALT","KC_RCTL","KC_RSFT",
-"KC_GRV","KC_1","KC_2","KC_3","KC_BSLS","U_NA","U_NA","U_NA","U_NA","U_NA",
-"U_NP","U_NP","KC_DOT","KC_0","KC_MINS","U_NA","KC_TRNS","U_NA","U_NP","U_NP",
-],
-"SYM": [
-"KC_LCBR","KC_AMPR","KC_ASTR","KC_LPRN","KC_RCBR","U_NA","U_NA","U_NA","U_NA","U_NA",
-"KC_COLN","KC_DLR","KC_PERC","KC_CIRC","KC_PLUS","U_NA","KC_RGUI","KC_RALT","KC_RCTL","KC_RSFT",
-"KC_TILD","KC_EXLM","KC_AT","KC_HASH","KC_PIPE","U_NA","U_NA","U_NA","U_NA","U_NA",
-"U_NP","U_NP","KC_LPRN","KC_RPRN","KC_UNDS","KC_TRNS","U_NA","U_NA","U_NP","U_NP",
-],
-"FUN": [
-"U_NA","U_NA","U_NA","U_NA","U_NA","KC_PSCR","KC_F7","KC_F8","KC_F9","KC_F12",
-"U_NA","U_NA","U_NA","U_NA","U_NA","LCTL(LSFT(LGUI(KC_4)))","KC_F4","KC_F5","KC_F6","KC_F11",
-"KC_TRNS","U_NA","U_NA","U_NA","U_NA","LCTL(LSFT(LGUI(KC_3)))","KC_F1","KC_F2","KC_F3","KC_F10",
-"U_NP","U_NP","KC_TRNS","U_NA","U_NA","U_NA","U_NA","U_NA","U_NP","U_NP",
-],
-}
+Emits, in Miryoku enum order (so qmk_viewer's layer number matches the
+firmware's raw-HID indicator):
+  - bastardkb/skeletyl/v1/elitec  (split_3x5_3)  <- *_NIKROULAH macros
+  - ferris/sweep                  (split_3x5_2)  <- *_SWEEP macros (+ reused BUTTON)
 
-# Miryoku enum order -> json layer index (so byte 0 from the firmware matches).
+Run:  python3 keyboards/bastardkb/skeletyl/keymaps/nikroulah/gen_keymap_json.py
+"""
+import json, os, re
+
+REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", ".."))
+ALT = os.path.join(REPO, "users/manna-harbour_miryoku/miryoku_babel/miryoku_layer_alternatives.h")
+
+ENUM = {"U_BASE":0,"U_EXTRA":1,"U_TAP":2,"U_BUTTON":3,"U_NAV":4,
+        "U_MOUSE":5,"U_MEDIA":6,"U_NUM":7,"U_SYM":8,"U_FUN":9}
+CLIP = {"U_UND":"LGUI(KC_Z)","U_CUT":"LGUI(KC_X)","U_CPY":"LGUI(KC_C)",
+        "U_PST":"LGUI(KC_V)","U_RDO":"SGUI(KC_Z)"}
 ENUM_ORDER = ["BASE","EXTRA","TAP","BUTTON","NAV","MOUSE","MEDIA","NUM","SYM","FUN"]
 
-XLATE = {
-"U_NP":"KC_NO","U_NA":"KC_NO","U_NU":"KC_NO",
-"U_UND":"LGUI(KC_Z)","U_CUT":"LGUI(KC_X)","U_CPY":"LGUI(KC_C)","U_PST":"LGUI(KC_V)","U_RDO":"SGUI(KC_Z)",
-"LT(U_EXTRA,KC_ESC)":"LT(1,KC_ESC)","LT(U_NAV,KC_SPC)":"LT(4,KC_SPC)","LT(U_MOUSE,KC_TAB)":"LT(5,KC_TAB)",
-"LT(U_SYM,KC_ENT)":"LT(8,KC_ENT)","LT(U_NUM,KC_BSPC)":"LT(7,KC_BSPC)","LT(U_MEDIA,KC_DEL)":"LT(6,KC_DEL)",
-"LT(U_BUTTON,KC_Z)":"LT(3,KC_Z)","LT(U_BUTTON,KC_SLSH)":"LT(3,KC_SLSH)",
-"MO(U_TAP)":"MO(2)","MO(U_FUN)":"MO(9)",
-}
 
-def to_json_layer(tokens):
-    assert len(tokens) == 40, len(tokens)
-    keys36 = tokens[0:30] + tokens[32:38]   # drop the 4 U_NP corners, keep 6 thumbs
-    return [XLATE.get(t, t) for t in keys36]
+def split_tokens(s):
+    toks, depth, cur = [], 0, ""
+    for ch in s:
+        if ch == "," and depth == 0:
+            toks.append(cur.strip()); cur = ""
+        else:
+            if ch in "([": depth += 1
+            elif ch in ")]": depth -= 1
+            cur += ch
+    if cur.strip():
+        toks.append(cur.strip())
+    return toks
 
-out = {
-    "version": 1,
-    "notes": "Generated from the MIRYOKU_ALTERNATIVES_*_NIKROULAH layers. Layer order matches the Miryoku layer enum so qmk_viewer's layer number lines up with the firmware's raw-HID indicator.",
-    "documentation": "",
-    "keyboard": "bastardkb/skeletyl/v1/elitec",
-    "keymap": "nikroulah",
-    "layout": "LAYOUT_split_3x5_3",
-    "layers": [to_json_layer(slots[name]) for name in ENUM_ORDER],
-    "author": "nikroulah",
-}
 
-path = "/Users/jwang/qmk_firmware/keyboards/bastardkb/skeletyl/keymaps/nikroulah/keymap.json"
-with open(path, "w") as f:
-    json.dump(out, f, indent=2)
-    f.write("\n")
+def get_macro(text, name):
+    """Return the 40 raw tokens of `#define <name> \\` ... or None if absent."""
+    lines = text.splitlines()
+    for idx, l in enumerate(lines):
+        if l.strip().startswith("#define " + name + " "):
+            body, j = [], idx + 1
+            while True:
+                body.append(lines[j])
+                if not lines[j].rstrip().endswith("\\"):
+                    break
+                j += 1
+            joined = " ".join(x.rstrip().rstrip("\\").strip() for x in body)
+            toks = split_tokens(joined)
+            assert len(toks) == 40, "%s: got %d tokens" % (name, len(toks))
+            return toks
+    return None
 
-print("wrote", path)
-for i, name in enumerate(ENUM_ORDER):
-    print(i, name, "->", out["layers"][i][:5], "...")
+
+def xlate(t):
+    if t in ("U_NP", "U_NA", "U_NU"):
+        return "KC_NO"
+    if t in CLIP:
+        return CLIP[t]
+    if t == "TD(U_TD_BOOT)":
+        return "QK_BOOT"          # plain JSON can't express the tap dance
+    for name, i in ENUM.items():
+        t = t.replace(name, str(i))
+    return t
+
+
+def build(text, suffix, drop_keep, reuse_button=False):
+    """suffix: 'NIKROULAH' or 'SWEEP'. drop_keep: indices to keep from the 40."""
+    layers = []
+    for slot in ENUM_ORDER:
+        name = "MIRYOKU_ALTERNATIVES_%s_%s" % (slot, suffix)
+        toks = get_macro(text, name)
+        if toks is None and reuse_button and slot == "BUTTON":
+            toks = get_macro(text, "MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH")
+        if toks is None:
+            toks = ["U_NP"] * 40          # slot unused on this board -> blank
+        keys = [toks[i] for i in drop_keep]
+        layers.append([xlate(t) for t in keys])
+    return layers
+
+
+def main():
+    text = open(ALT).read()
+
+    # split_3x5_3: keep K32..K37 (drop the 4 U_NP corners N30/N31/N38/N39)
+    KEEP_3 = list(range(0, 30)) + [32, 33, 34, 35, 36, 37]
+    # split_3x5_2: only the inner four thumbs K33..K36 reach the board
+    KEEP_2 = list(range(0, 30)) + [33, 34, 35, 36]
+
+    targets = [
+        ("bastardkb/skeletyl/v1/elitec", "LAYOUT_split_3x5_3", "NIKROULAH", KEEP_3,
+         False, "keyboards/bastardkb/skeletyl/keymaps/nikroulah/keymap.json"),
+        ("ferris/sweep", "LAYOUT_split_3x5_2", "SWEEP", KEEP_2,
+         True, "keyboards/ferris/sweep/keymaps/nikroulah/keymap.json"),
+    ]
+    for kb, layout, suffix, keep, reuse_button, relpath in targets:
+        out = {
+            "version": 1,
+            "notes": "Generated from miryoku_layer_alternatives.h (see gen_keymap_json.py). "
+                     "Render source for qmk_viewer; layer order matches the Miryoku enum.",
+            "documentation": "",
+            "keyboard": kb,
+            "keymap": "nikroulah",
+            "layout": layout,
+            "layers": build(text, suffix, keep, reuse_button),
+            "author": "nikroulah",
+        }
+        path = os.path.join(REPO, relpath)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w") as f:
+            json.dump(out, f, indent=2)
+            f.write("\n")
+        print("wrote", relpath)
+        for i, name in enumerate(ENUM_ORDER):
+            print("  %d %-6s %s ..." % (i, name, out["layers"][i][:5]))
+
+
+if __name__ == "__main__":
+    main()
