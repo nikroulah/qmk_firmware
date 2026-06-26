@@ -12,7 +12,7 @@ Setup + run (keymap-drawer is not a repo dependency; install it ad hoc):
     /tmp/kmd-venv/bin/pip install keymap-drawer
     /tmp/kmd-venv/bin/python3 users/nikroulah/docs/gen_layer_images.py
 """
-import json, os, subprocess, sys, tempfile
+import json, os, re, subprocess, sys, tempfile
 import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +40,11 @@ EXACT = {
 EXACT.update({"L%d" % i: NAMES[i] for i in range(10)})
 # Substring (combo-modifier) prettifying, applied after exact misses.
 SUBS = [("Gui+", "⌘"), ("Sft+", "⇧"), ("Alt+", "⌥"), ("Ctl+", "⌃")]
+# Arrow names as whole words, applied after SUBS so a modifier+arrow legend like
+# "Ctl+RGHT" becomes "⌃→" (matching the bare-arrow glyphs used elsewhere). Word
+# boundaries keep these from firing inside other tokens (e.g. UP within PGUP).
+ARROWS = [(re.compile(r"\b%s\b" % k), v)
+          for k, v in (("RGHT", "→"), ("LEFT", "←"), ("DOWN", "↓"), ("UP", "↑"))]
 
 
 def pretty(s):
@@ -49,6 +54,8 @@ def pretty(s):
         return EXACT[s]
     for a, b in SUBS:
         s = s.replace(a, b)
+    for pat, b in ARROWS:
+        s = pat.sub(b, s)
     return s
 
 

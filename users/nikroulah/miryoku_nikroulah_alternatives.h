@@ -52,8 +52,8 @@ U_NP,              U_NP,              KC_TRNS,           U_NA,              U_NA
 
 #define MIRYOKU_ALTERNATIVES_MOUSE_NIKROULAH \
 TD(U_TD_BOOT),     MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              U_CUT,             U_CPY,             MS_UP,           U_RDO,             U_UND,             \
-KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             MS_LEFT,           MS_DOWN,           MS_RGHT,           U_NA,              \
-U_NA,              MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              U_NA,              MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             MS_LEFT,           MS_DOWN,           MS_RGHT,           LCTL(KC_RGHT),     \
+U_NA,              MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              LCTL(KC_LEFT),     MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
 U_NP,              U_NP,              U_NA,              U_NA,              KC_TRNS,           MS_BTN2,           MS_BTN1,           MS_BTN3,           U_NP,              U_NP
 
 // Right-hand symbols, opened by the Q letter-hold (LT(U_SYM,KC_Q) on base).
@@ -116,8 +116,8 @@ U_NP,              U_NP,              U_NP,              KC_TRNS,           U_NA
 
 #define MIRYOKU_ALTERNATIVES_MOUSE_SWEEP \
 TD(U_TD_BOOT),     MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              U_CUT,             U_CPY,             MS_UP,           U_RDO,             U_UND,             \
-KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             MS_LEFT,           MS_DOWN,           MS_RGHT,           U_NA,              \
-U_NA,              MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              U_NA,              MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             MS_LEFT,           MS_DOWN,           MS_RGHT,           LCTL(KC_RGHT),     \
+U_NA,              MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              LCTL(KC_LEFT),     MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
 U_NP,              U_NP,              U_NP,              U_NA,              KC_TRNS,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_SWEEP \
