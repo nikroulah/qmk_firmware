@@ -19,9 +19,19 @@ outside those two dirs are this `CLAUDE.md`.
 requests (to `upstream` qmk/qmk_firmware, the `nikroulah` fork's default branch,
 or anywhere). Commit and push to `origin/miryoku` only when asked.
 
+## QMK version
+
+As of 2026-06 this branch is on **QMK 0.33.7** (merged up from the old 0.20.6
+base — see "Updating QMK" below). Current QMK **removed the manna-harbour_miryoku
+userspace** from its tree (the community-userspace purge), so
+`users/manna-harbour_miryoku/` is now **vendored** here from `miryoku_qmk/miryoku`
+(still byte-identical to that remote — restore it with
+`git checkout miryoku_qmk/miryoku -- users/manna-harbour_miryoku` if ever lost).
+
 ## Board facts
 
-- **skeletyl**: `bastardkb/skeletyl/v1/elitec`, atmega32u4, bootloader
+- **skeletyl**: `bastardkb/skeletyl/promicro` (renamed from the old
+  `…/v1/elitec`; Elite-C is Pro-Micro-compatible), atmega32u4, bootloader
   `atmel-dfu`, split `MASTER_RIGHT` (no `EE_HANDS`/`SPLIT_HAND_PIN` → **same
   firmware flashed to both halves**), `LAYOUT_split_3x5_3` (36 keys).
 - **sweep**: `ferris/sweep`, atmega32u4, split. `LAYOUT_split_3x5_2` (34 keys).
@@ -37,7 +47,7 @@ or anywhere). Commit and push to `origin/miryoku` only when asked.
 
 ```bash
 # build (skeletyl)
-qmk compile -kb bastardkb/skeletyl/v1/elitec -km nikroulah
+qmk compile -kb bastardkb/skeletyl/promicro -km nikroulah
 # build (sweep)
 qmk compile -kb ferris/sweep -km nikroulah
 # flash: same -km, run once per half; reset each half when prompted
@@ -49,9 +59,9 @@ qmk flash -kb <board> -km nikroulah
   `qmk compile` and leaves flashing to the user.
 - Use `qmk compile`, **not** bare `make` — the avr toolchain is only on PATH
   inside the qmk wrapper (bare make fails with `gccversion Error 127`).
-- Firmware is near full: skeletyl ~**27.2 KB**, sweep ~**27.0 KB** (of 28.7 KB;
-  ~1.4–1.7 KB free). Watch the size on any change. `CONSOLE_ENABLE` does **not**
-  fit (~3.25 KB, overflows); `RAW_ENABLE` costs ~358 B and is already on.
+- Firmware sizes on QMK 0.33.7 + Chordal Hold: skeletyl ~**26.5 KB**, sweep
+  ~**24.7 KB** (of 28.7 KB). More headroom than the old 0.20.6 build. Still watch
+  the size; `CONSOLE_ENABLE` does **not** fit; `RAW_ENABLE` is already on.
 
 ## The files that matter (all edits live here)
 
@@ -60,7 +70,7 @@ qmk flash -kb <board> -km nikroulah
 | `users/nikroulah/miryoku_nikroulah_alternatives.h` | The `MIRYOKU_ALTERNATIVES_*_NIKROULAH` (skeletyl) and `*_SWEEP` layer macros + `*_NIKROULAH_BLANK`. **Source of truth for both layouts.** Included from `config.h`. |
 | `users/nikroulah/config.h` | Our `MIRYOKU_CLIPBOARD_MAC`, mouse/tapping/caps-word settings, and the `#if defined(KEYBOARD_ferris_sweep)` block selecting `*_SWEEP` vs `*_NIKROULAH` macros (**how the two boards are differentiated**). Ends by `#include "../manna-harbour_miryoku/config.h"` to reuse the pristine engine config. |
 | `users/nikroulah/rules.mk` | The Miryoku feature flags (mirrors the engine's), `RAW_ENABLE = yes`, `INTROSPECTION_KEYMAP_C = nikroulah.c`, and `include users/manna-harbour_miryoku/post_rules.mk`. |
-| `users/nikroulah/nikroulah.c` | **Verbatim copy** of the engine keymap `.c` (keymaps[]/tap-dances/combos) **plus** the qmk_viewer raw-HID block (`#if defined(RAW_ENABLE)`). Only the `.h` include is repointed to `../manna-harbour_miryoku/...` (a string change, no codegen effect). Copied (not `#include`d) so our additions sit in their original positions and the linked output matches exactly. |
+| `users/nikroulah/nikroulah.c` | Copy of the engine keymap `.c` (keymaps[]/tap-dances/combos) **plus** our `get_tapping_term()` + `get_chordal_hold()` (home-row Shift behavior) and the qmk_viewer raw-HID block (`#if defined(RAW_ENABLE)`). The `.h` include is repointed to `../manna-harbour_miryoku/...`. Also carries the QMK-0.33 compat fixes the 2023 engine needed: `key_overrides` as a real `[]` array (introspection), `MS_*` mouse keycodes in the layer macros, `IGNORE_MOD_TAP_INTERRUPT` undef'd in `config.h`. If you re-sync from a newer engine `.c`, re-apply these. |
 | `layouts/community/split_3x5_{3,2}/nikroulah/` | `config.h` (`LAYOUT_miryoku` → `LAYOUT_split_3x5_{3,2}`) + empty `keymap.c`; the sweep dir also has `rules.mk` (`MIRYOKU_KLUDGE_THUMBCOMBOS=yes`). Mirror the `manna-harbour_miryoku` community dirs. |
 | `users/nikroulah/qmk_viewer_maps/{skeletyl,sweep}/keymap.json` | Render sources for qmk_viewer (see below). **Not daily-driver keymaps.** |
 | `users/nikroulah/qmk_viewer_maps/gen_keymap_json.py` | Generator for **both** render JSONs. **Parses the macros out of `miryoku_nikroulah_alternatives.h`** (no hardcoded copy → can't drift). |
@@ -78,9 +88,24 @@ A customized Miryoku QWERTY. Differences from stock Miryoku:
 
 - **Home-row mods in SCAG order** (Shift on the pinkies, then Ctrl, Alt, Gui on
   the index). Right hand uses `RGUI/RALT/RCTL/RSFT`. (Stock Miryoku is GACS.)
+- **Chordal Hold on all home-row mods.** `#define CHORDAL_HOLD` (config.h) plus
+  `get_chordal_hold()` (nikroulah.c) apply the opposite-hands rule to all eight
+  home-row mod-taps (`LSFT_T(KC_A)`,`LCTL_T(KC_S)`,…,`RSFT_T(KC_QUOT)`) — a
+  same-hand key while a mod is held rolls as a tap (no accidental mod/capital),
+  an opposite-hand key holds the mod. `get_tapping_term()` returns **350 ms** for
+  A/' only (needs `TAPPING_TERM_PER_KEY`) so holding A/' alone past 350 ms still
+  Shifts a same-hand key; the other mods use the normal 200 ms. Layer-taps
+  (thumbs, Q/T/Z letter holds) return `true` → normal tap/hold. Handedness is
+  auto-generated by QMK from each board's `info.json` (weak `chordal_hold_layout`),
+  verified L/R-correct for both boards.
 - Outer-pinky bottom-row keys are `LT(U_BUTTON, …)`.
 - Custom **BUTTON** layer: home-row mods + cut/copy/paste/undo mirrored on both
-  hands, nothing on the thumbs.
+  hands, nothing on the thumbs. Double-tap-bootloader (`TD(U_TD_BOOT)`) lives
+  here on **X** and **.**.
+- **Bootloader on the thumb layers too** (NAV/MOUSE/MEDIA/FUN), Miryoku-style: a
+  `TD(U_TD_BOOT)` on the **upper outer pinky of the mod hand** — top-left `[0]`
+  for the left-mod layers (NAV, MOUSE), top-right `[9]` for the right-mod layers
+  (MEDIA, FUN). One per layer; no other boot keys on those layers.
 - Clipboard keys use the Miryoku `U_CPY/U_CUT/U_PST/U_UND` macros, which under
   `MIRYOKU_CLIPBOARD_MAC` expand to `LGUI(KC_C/X/V/Z)` — i.e. **mac-only**
   (switch to `MIRYOKU_CLIPBOARD_WIN` for Linux/Windows).
@@ -185,9 +210,36 @@ qmk compile -kb ferris/sweep -km nikroulah
 - Configurator JSON **can't express tap dances**. The bootloader key uses
   `TD(U_TD_BOOT)` (Miryoku's built-in double-tap-to-boot) in the firmware, but a
   plain `QK_BOOT` in that Configurator design JSON.
-- Features compiled in (`rules.mk`): **Tap Dance** is used (the boot key).
-  **Caps Word** is now reachable two ways: `BOTH_SHIFTS_TURNS_ON_CAPS_WORD`
-  (press both home-row Shift mod-taps A+' together) and a `CW_TOGG` key on the
-  BUTTON layer's V and M keys. Active: mod-taps/layer-taps (`TAPPING_TERM 200`,
-  `IGNORE_MOD_TAP_INTERRUPT`, `QUICK_TAP_TERM 0`), Auto Shift on non-alphas,
-  mouse keys, media keys.
+- Features compiled in (`rules.mk`): **Tap Dance** (the boot key). **Caps Word**
+  is reachable two ways: `BOTH_SHIFTS_TURNS_ON_CAPS_WORD` (press both home-row
+  Shifts A+' together) and a `CW_TOGG` key on the BUTTON layer's V and M keys.
+  Active: mod-taps/layer-taps (`TAPPING_TERM 200`, default mod-tap-interrupt,
+  `QUICK_TAP_TERM 0`), **Chordal Hold** on A/' (see layout), Auto Shift on
+  non-alphas, mouse keys, media keys.
+
+## Updating QMK
+
+The supported path is the miryoku merge (see `users/manna-harbour_miryoku/
+readme.org` → Branches → Merge), adapted to our remotes (`origin` = our fork,
+`upstream` = qmk/qmk_firmware), on a throwaway branch:
+
+```bash
+git checkout -b miryoku-update            # off miryoku
+git revert --no-edit $(git log --grep='^\[miryoku-github\]' --pretty='format:%H' | tr '\n' ' ')
+git fetch upstream && git merge --no-edit upstream/master
+```
+
+Things that bit us going 0.20.6 → 0.33.7 (all fixed in `users/nikroulah/`, the
+pristine engine untouched):
+- The merge **deletes `users/manna-harbour_miryoku/`** (QMK removed it). Restore
+  from `miryoku_qmk`: `git checkout miryoku_qmk/miryoku -- users/manna-harbour_miryoku`.
+  (`miryoku_qmk/miryoku` itself was *not* rebased onto newer QMK — same 2023 base.)
+- **Board renames**: skeletyl `v1/elitec` → `promicro`.
+- **Mouse keycodes** `KC_MS_*/KC_WH_*/KC_BTN*/KC_ACL*` → `MS_*` (note `MS_RGHT`,
+  not `MS_RIGHT`).
+- **`key_overrides`** must be a real `[]` array (ARRAY_SIZE introspection), not
+  the old NULL-terminated `**`.
+- **`IGNORE_MOD_TAP_INTERRUPT`** now `#error`s (it's the default) — `#undef`'d at
+  the end of `users/nikroulah/config.h`.
+- The stock 3x5_2 **thumb combos** reference `KC_BTN*`; we don't use them, so
+  `MIRYOKU_KLUDGE_THUMBCOMBOS` is left unset for the sweep (community rules.mk).

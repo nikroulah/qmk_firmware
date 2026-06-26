@@ -19,6 +19,18 @@
 // the BUTTON layer's V/M keys.) Auto-turns-off at the next word break.
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
+// Chordal Hold (opposite-hands rule) on ALL home-row mod-taps (both hands), via
+// get_chordal_hold() in nikroulah.c. A same-hand key pressed while a mod is held
+// settles it as a tap -> no accidental mod/capital on same-hand rolls; an
+// opposite-hand key still holds the mod. A/' use a 350ms per-key tapping term
+// (see get_tapping_term, needs TAPPING_TERM_PER_KEY) as an escape hatch -- hold
+// A/' alone past 350ms and it's Shift even for a following same-hand key; the
+// other mods use the normal 200ms term.
+// Handedness is auto-derived by QMK from each board's layout (chordal_hold_layout
+// is weak-generated from info.json), so no manual handedness map is needed.
+#define CHORDAL_HOLD
+#define TAPPING_TERM_PER_KEY
+
 // Mouse keys: constant-speed mode with momentary acceleration. No acceleration
 // ramp -- the cursor/scroll move at a fixed default speed; holding the MOUSE
 // layer's ACL0/ACL1/ACL2 keys momentarily selects slow / medium / fast (this
@@ -80,3 +92,9 @@
 // shift defaults, thumb-combo config). Its `#include "custom_config.h"`
 // resolves to the engine's own (empty) hook -- our customizations are above.
 #include "../manna-harbour_miryoku/config.h"
+
+// QMK ~0.22+ made ignore-mod-tap-interrupt the default and #errors if the old
+// define is still present. The pristine 2023 miryoku engine config still sets
+// it, so neutralize it here (after that include) rather than editing the
+// pristine userspace. Same behavior either way (it's now the default).
+#undef IGNORE_MOD_TAP_INTERRUPT

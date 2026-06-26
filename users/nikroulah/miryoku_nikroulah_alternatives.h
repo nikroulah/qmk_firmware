@@ -38,7 +38,7 @@ LT(U_BUTTON,KC_Z), KC_X,              KC_C,              KC_V,              KC_B
 U_NP,              U_NP,              LT(U_NUM,KC_ESC),  LT(U_NAV,KC_SPC),  LT(U_MOUSE,KC_TAB),LT(U_FUN,KC_ENT),  LT(U_MEDIA,KC_SPC),KC_BSPC,           U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_NAV_NIKROULAH \
-U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
+TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
 KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             KC_LEFT,           KC_DOWN,           KC_RGHT,           U_NA,              \
 U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
 U_NP,              U_NP,              U_NA,              KC_TRNS,           U_NA,              KC_ENT,            KC_SPC,            KC_BSPC,           U_NP,              U_NP
@@ -51,10 +51,10 @@ U_NA,              U_NA,              U_NA,              U_NA,              U_NA
 U_NP,              U_NP,              KC_TRNS,           U_NA,              U_NA,              KC_BSLS,           KC_DOT,            KC_0,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MOUSE_NIKROULAH \
-U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_MS_U,           U_RDO,             U_UND,             \
-KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             KC_MS_L,           KC_MS_D,           KC_MS_R,           U_NA,              \
-U_NA,              KC_ACL0,           KC_ACL1,           KC_ACL2,           U_NA,              U_NA,              KC_WH_L,           KC_WH_D,           KC_WH_U,           KC_WH_R,           \
-U_NP,              U_NP,              U_NA,              U_NA,              KC_TRNS,           KC_BTN2,           KC_BTN1,           KC_BTN3,           U_NP,              U_NP
+TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             MS_UP,           U_RDO,             U_UND,             \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             MS_LEFT,           MS_DOWN,           MS_RGHT,           U_NA,              \
+U_NA,              MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              U_NA,              MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
+U_NP,              U_NP,              U_NA,              U_NA,              KC_TRNS,           MS_BTN2,           MS_BTN1,           MS_BTN3,           U_NP,              U_NP
 
 // Right-hand symbols, opened by the Q letter-hold (LT(U_SYM,KC_Q) on base).
 #define MIRYOKU_ALTERNATIVES_SYM_NIKROULAH \
@@ -64,7 +64,7 @@ U_NA,              U_NA,              U_NA,              U_NA,              U_NA
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_PIPE,           KC_LPRN,           KC_RPRN,           U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_NIKROULAH \
-U_NA,              U_NA,              U_NA,              U_NA,              KC_EJCT,           TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              \
+U_NA,              U_NA,              U_NA,              U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              U_NA,              TD(U_TD_BOOT),              \
 KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_MPRV,           U_NA,              KC_MSTP,           KC_MNXT,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NA,              KC_MPLY,           KC_MUTE,           U_NA,              KC_TRNS,           U_NA,              U_NP,              U_NP
@@ -81,7 +81,7 @@ U_NP,              U_NP,              U_NA,              U_NA,              U_NA
 // F-keys on the LEFT hand (mods on the right), so it's comfortable held by the
 // right-outer (Bspc) thumb. Mirrors the sweep's FUN.
 #define MIRYOKU_ALTERNATIVES_FUN_NIKROULAH \
-KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
+KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_NA,              U_NA,              TD(U_TD_BOOT),     \
 KC_F11,            KC_F4,             KC_F5,             KC_F6,             LCTL(LSFT(LGUI(KC_4))),U_NA,          KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_F10,            KC_F1,             KC_F2,             KC_F3,             LCTL(LSFT(LGUI(KC_3))),U_NA,          U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_TRNS,           U_NA,              U_NA,              U_NP,              U_NP
@@ -109,25 +109,25 @@ LT(U_BUTTON,KC_Z), KC_X,              KC_C,              KC_V,              KC_B
 U_NP,              U_NP,              U_NP,              LT(U_NAV,KC_ESC),  LT(U_MOUSE,KC_ENT),LT(U_FUN,KC_SPC),  LT(U_MEDIA,KC_BSPC),U_NP,             U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_NAV_SWEEP \
-U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
+TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
 KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             KC_LEFT,           KC_DOWN,           KC_RGHT,           U_NA,              \
 U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
 U_NP,              U_NP,              U_NP,              KC_TRNS,           U_NA,              KC_ENT,            KC_BSPC,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MOUSE_SWEEP \
-U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_MS_U,           U_RDO,             U_UND,             \
-KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             KC_MS_L,           KC_MS_D,           KC_MS_R,           U_NA,              \
-U_NA,              KC_ACL0,           KC_ACL1,           KC_ACL2,           U_NA,              U_NA,              KC_WH_L,           KC_WH_D,           KC_WH_U,           KC_WH_R,           \
-U_NP,              U_NP,              U_NP,              U_NA,              KC_TRNS,           KC_BTN1,           KC_BTN2,           U_NP,              U_NP,              U_NP
+TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             MS_UP,           U_RDO,             U_UND,             \
+KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             MS_LEFT,           MS_DOWN,           MS_RGHT,           U_NA,              \
+U_NA,              MS_ACL0,           MS_ACL1,           MS_ACL2,           U_NA,              U_NA,              MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
+U_NP,              U_NP,              U_NP,              U_NA,              KC_TRNS,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_SWEEP \
-U_NA,              U_NA,              U_NA,              U_NA,              KC_EJCT,           TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              \
+U_NA,              U_NA,              U_NA,              U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              U_NA,              TD(U_TD_BOOT),              \
 KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_MPRV,           U_NA,              KC_MSTP,           KC_MNXT,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NP,              KC_MPLY,           KC_MUTE,           U_NA,              KC_TRNS,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_FUN_SWEEP \
-KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              \
+KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_NA,              U_NA,              TD(U_TD_BOOT),     \
 KC_F11,            KC_F4,             KC_F5,             KC_F6,             LCTL(LSFT(LGUI(KC_4))),U_NA,          KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_F10,            KC_F1,             KC_F2,             KC_F3,             LCTL(LSFT(LGUI(KC_3))),U_NA,          U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NP,              U_NA,              U_NA,              KC_TRNS,           U_NA,              U_NP,              U_NP,              U_NP

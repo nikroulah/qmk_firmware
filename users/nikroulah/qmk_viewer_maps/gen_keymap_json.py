@@ -90,7 +90,7 @@ def main():
     KEEP_2 = list(range(0, 30)) + [33, 34, 35, 36]
 
     targets = [
-        ("bastardkb/skeletyl/v1/elitec", "LAYOUT_split_3x5_3", "NIKROULAH", KEEP_3,
+        ("bastardkb/skeletyl/promicro", "LAYOUT_split_3x5_3", "NIKROULAH", KEEP_3,
          False, "users/nikroulah/qmk_viewer_maps/skeletyl/keymap.json"),
         ("ferris/sweep", "LAYOUT_split_3x5_2", "SWEEP", KEEP_2,
          True, "users/nikroulah/qmk_viewer_maps/sweep/keymap.json"),

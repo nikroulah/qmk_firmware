@@ -5,7 +5,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "../manna-harbour_miryoku/manna-harbour_miryoku.h"
+#include "manna-harbour_miryoku.h"
 
 
 // Additional Features double tap guard
@@ -49,50 +49,13 @@ MIRYOKU_LAYER_LIST
 };
 
 
-// Chordal Hold + per-key tapping term for the home-row Shift mod-taps (A and ').
-// 350ms term: a same-hand key within that window rolls as a tap (no accidental
-// capital), while holding A/' alone past 350ms still settles as Shift.
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case LSFT_T(KC_A):
-    case RSFT_T(KC_QUOT):
-      return 350;
-    default:
-      return TAPPING_TERM;
-  }
-}
-
-// Apply the Chordal Hold opposite-hands rule to ALL home-row mod-taps (both
-// hands). Returning the default (true iff opposite hands) makes same-hand chords
-// settle as taps. Only A/' get the longer 350ms term above; the other mods use
-// the normal 200ms TAPPING_TERM. Layer-taps (thumbs, Q/T/Z letter holds) return
-// true => unaffected, normal tap/hold.
-bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record,
-                      uint16_t other_keycode, keyrecord_t *other_record) {
-  switch (tap_hold_keycode) {
-    case LSFT_T(KC_A):
-    case LCTL_T(KC_S):
-    case LALT_T(KC_D):
-    case LGUI_T(KC_F):
-    case RGUI_T(KC_J):
-    case RALT_T(KC_K):
-    case RCTL_T(KC_L):
-    case RSFT_T(KC_QUOT):
-      return get_chordal_hold_default(tap_hold_record, other_record);
-    default:
-      return true;
-  }
-}
-
-
 // shift functions
 
 const key_override_t capsword_key_override = ko_make_basic(MOD_MASK_SHIFT, CW_TOGG, KC_CAPS);
 
-// QMK >=0.22 collects key overrides by introspection via ARRAY_SIZE(), which
-// needs a real array (not the old NULL-terminated `const key_override_t **`).
-const key_override_t *key_overrides[] = {
+const key_override_t **key_overrides = (const key_override_t *[]){
     &capsword_key_override,
+    NULL
 };
 
 
@@ -125,40 +88,4 @@ combo_t key_combos[COMBO_COUNT] = {
   #endif
   COMBO(thumbcombos_fun, KC_APP)
 };
-#endif
-
-
-// qmk_viewer live indicator (https://github.com/thooams/qmk_viewer)
-// Sends a 32-byte raw HID report at most every 50ms (byte 0 = active layer,
-// remaining bytes = a bitmap of pressed matrix keys) from matrix_scan_user.
-// Polling here -- rather than sending from process_record_user on every key --
-// keeps raw_hid_send (which blocks until the host drains the endpoint) off the
-// keystroke path and caps it to ~20 sends/sec, so typing stays responsive
-// regardless of speed. The viewer updates at ~20fps, which is plenty. Only
-// built when RAW_ENABLE is set (see custom_rules.mk); other builds unaffected.
-#if defined (RAW_ENABLE)
-#include "raw_hid.h"
-
-#define U_QMK_VIEWER_REPORT_SIZE 32
-
-void raw_hid_receive(uint8_t *data, uint8_t length) {
-  // qmk_viewer only reads keyboard state; nothing to handle on receive.
-}
-
-void matrix_scan_user(void) {
-  static uint16_t last_sent = 0;
-  if (timer_elapsed(last_sent) < 50) {
-    return;
-  }
-  last_sent = timer_read();
-
-  uint8_t report[U_QMK_VIEWER_REPORT_SIZE] = {0};
-  report[0] = get_highest_layer(layer_state);
-  for (uint8_t i = 0; i < MATRIX_ROWS * MATRIX_COLS && i < (U_QMK_VIEWER_REPORT_SIZE - 1) * 8; i++) {
-    if (matrix_is_on(i / MATRIX_COLS, i % MATRIX_COLS)) {
-      report[1 + (i / 8)] |= 1 << (i % 8);
-    }
-  }
-  raw_hid_send(report, U_QMK_VIEWER_REPORT_SIZE);
-}
 #endif
