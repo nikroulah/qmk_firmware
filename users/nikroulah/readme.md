@@ -84,6 +84,8 @@ A side-effect of my moving two layers onto left-hand alpha holds is that I'm alr
 ### Nav
 ![Nav](docs/img/sweep/nav.svg)
 
+Space becomes Enter on the right thumb cluster, since that is a more common key to want while navigating with arrow keys imo.
+
 ### Mouse
 ![Mouse](docs/img/sweep/mouse.svg)
 
