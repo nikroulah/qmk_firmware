@@ -135,8 +135,10 @@ A customized Miryoku QWERTY. Differences from stock Miryoku:
   **MOUSE** carries `TD(U_TD_U_BASE)` on the key *beneath* the left-hand Shift
   (`[20]`) — double-tap returns to the default alpha BASE. These functions were
   always compiled in via `MIRYOKU_LAYER_LIST` (no firmware-size change); they were
-  just never placed until now. The JSON generator renders `TD(U_TD_U_*)` as
-  `DF(<n>)`; the SVG generator names those `Mouse`/`Base`.
+  just never placed until now. The JSON generator renders `TD(U_TD_U_*)` as the
+  bare target-layer **name** (`BASE`, `MOUSE`, …) — qmk_viewer has no layer-keycode
+  parser and prints unknown keycodes verbatim, so the name shows the destination
+  directly; the SVG generator title-cases those to `Base`/`Mouse`.
 - Clipboard keys use the Miryoku `U_CPY/U_CUT/U_PST/U_UND` macros, which under
   `MIRYOKU_CLIPBOARD_MAC` expand to `LGUI(KC_C/X/V/Z)` — i.e. **mac-only**
   (switch to `MIRYOKU_CLIPBOARD_WIN` for Linux/Windows).
@@ -202,7 +204,12 @@ App: https://github.com/thooams/qmk_viewer (reads keyboard state over raw HID).
 - Firmware side (in `users/nikroulah/nikroulah.c`, `#if defined(RAW_ENABLE)`):
   `raw_hid_receive` (no-op) and `matrix_scan_user`, which at most every **50ms**
   builds a **32-byte** report (`byte 0` = highest active layer, remaining bytes =
-  pressed-key bitmap) and `raw_hid_send`s it. Polling here (not on every
+  pressed-key bitmap) and `raw_hid_send`s it. Byte 0 uses
+  `get_highest_layer(layer_state | default_layer_state)` — the `default_layer_state`
+  OR is essential so a base-layer switch (e.g. the `TD(U_TD_U_MOUSE)` key making
+  MOUSE the default) is reported; `layer_state` alone stays empty with no momentary
+  layer active, which made the viewer render BASE while locked on the new base
+  layer. Polling here (not on every
   keystroke) keeps the blocking `raw_hid_send` off the keystroke path so typing
   stays responsive; the viewer still updates at ~20fps.
 - Host side: load `users/nikroulah/qmk_viewer_maps/<board>/keymap.json` into

@@ -38,6 +38,9 @@ EXACT = {
     "PSCR": "PrtSc", "TAB": "Tab", "ENT": "Enter", "SPC": "Space", "BSPC": "Bksp",
 }
 EXACT.update({"L%d" % i: NAMES[i] for i in range(10)})
+# Base-layer-switch keys are emitted into the JSON as the bare uppercase layer
+# name (for qmk_viewer); title-case them here so the SVG legends read "Base"/"Mouse".
+EXACT.update({NAMES[i].upper(): NAMES[i] for i in range(10)})
 # Substring (combo-modifier) prettifying, applied after exact misses.
 SUBS = [("Gui+", "⌘"), ("Sft+", "⇧"), ("Alt+", "⌥"), ("Ctl+", "⌃")]
 # Arrow names as whole words, applied after SUBS so a modifier+arrow legend like
