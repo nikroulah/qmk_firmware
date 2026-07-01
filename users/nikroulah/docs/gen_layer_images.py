@@ -45,6 +45,10 @@ SUBS = [("Gui+", "⌘"), ("Sft+", "⇧"), ("Alt+", "⌥"), ("Ctl+", "⌃")]
 # boundaries keep these from firing inside other tokens (e.g. UP within PGUP).
 ARROWS = [(re.compile(r"\b%s\b" % k), v)
           for k, v in (("RGHT", "→"), ("LEFT", "←"), ("DOWN", "↓"), ("UP", "↑"))]
+# Named keys that also occur combined with a modifier glyph (e.g. "⌃TAB"), so a
+# whole-string EXACT match misses. Applied as whole words after ARROWS to
+# prettify the combined form (e.g. "⌃TAB" -> "⌃Tab", "⌃⇧TAB" -> "⌃⇧Tab").
+WORDS = [(re.compile(r"\bTAB\b"), "Tab")]
 
 
 def pretty(s):
@@ -55,6 +59,8 @@ def pretty(s):
     for a, b in SUBS:
         s = s.replace(a, b)
     for pat, b in ARROWS:
+        s = pat.sub(b, s)
+    for pat, b in WORDS:
         s = pat.sub(b, s)
     return s
 

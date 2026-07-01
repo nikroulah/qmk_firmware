@@ -30,6 +30,15 @@
 // is weak-generated from info.json), so no manual handedness map is needed.
 #define CHORDAL_HOLD
 #define TAPPING_TERM_PER_KEY
+// Permissive Hold settles an OPPOSITE-hand chord as a hold as soon as the other
+// key is pressed+released (nested) inside the tapping term -- Chordal Hold alone
+// does nothing for opposite hands, so without this a fast cross-hand shift chord
+// (e.g. hold A, tap a right-hand letter, release A) would resolve A as a *tap*
+// and give a lowercase letter. With this, the hold decision keys off nested
+// press/release, NOT the tapping term, so the 350ms A/' term below no longer
+// delays cross-hand capitals. (Same-hand rolls are still forced to taps by
+// Chordal Hold, so Permissive Hold can't reintroduce same-hand accidental mods.)
+#define PERMISSIVE_HOLD
 
 // Mouse keys: constant-speed mode with momentary acceleration. No acceleration
 // ramp -- the cursor/scroll move at a fixed default speed; holding the MOUSE
