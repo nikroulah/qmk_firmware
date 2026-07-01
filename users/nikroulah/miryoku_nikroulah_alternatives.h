@@ -38,7 +38,7 @@ LT(U_BUTTON,KC_Z), KC_X,              KC_C,              KC_V,              KC_B
 U_NP,              U_NP,              LT(U_NUM,KC_ESC),  LT(U_NAV,KC_SPC),  LT(U_MOUSE,KC_TAB),LT(U_FUN,KC_ENT),  LT(U_MEDIA,KC_SPC),KC_BSPC,           U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_NAV_NIKROULAH \
-TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
+TD(U_TD_BOOT),     U_NA,              LGUI(LSFT(KC_TAB)),LGUI(KC_TAB),      U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
 KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             KC_LEFT,           KC_DOWN,           KC_RGHT,           U_NA,              \
 U_NA,              U_NA,              LCTL(LSFT(KC_TAB)),LCTL(KC_TAB),      U_NA,              U_NA,              KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
 U_NP,              U_NP,              U_NA,              KC_TRNS,           U_NA,              KC_ENT,            KC_SPC,            KC_BSPC,           U_NP,              U_NP
@@ -109,7 +109,7 @@ LT(U_BUTTON,KC_Z), KC_X,              KC_C,              KC_V,              KC_B
 U_NP,              U_NP,              U_NP,              LT(U_NAV,KC_ESC),  LT(U_MOUSE,KC_ENT),LT(U_FUN,KC_SPC),  LT(U_MEDIA,KC_BSPC),U_NP,             U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_NAV_SWEEP \
-TD(U_TD_BOOT),     U_NA,              U_NA,              U_NA,              U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
+TD(U_TD_BOOT),     U_NA,              LGUI(LSFT(KC_TAB)),LGUI(KC_TAB),      U_NA,              U_CUT,             U_CPY,             KC_UP,             U_RDO,             U_UND,             \
 KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           KC_TAB,            U_PST,             KC_LEFT,           KC_DOWN,           KC_RGHT,           U_NA,              \
 U_NA,              U_NA,              LCTL(LSFT(KC_TAB)),LCTL(KC_TAB),      U_NA,              U_NA,              KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
 U_NP,              U_NP,              U_NP,              KC_TRNS,           U_NA,              KC_ENT,            KC_BSPC,           U_NP,              U_NP,              U_NP

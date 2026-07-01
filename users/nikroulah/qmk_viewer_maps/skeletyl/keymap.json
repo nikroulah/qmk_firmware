@@ -161,8 +161,8 @@
     [
       "QK_BOOT",
       "KC_NO",
-      "KC_NO",
-      "KC_NO",
+      "LGUI(LSFT(KC_TAB))",
+      "LGUI(KC_TAB)",
       "KC_NO",
       "LGUI(KC_X)",
       "LGUI(KC_C)",

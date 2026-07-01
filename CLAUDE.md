@@ -122,9 +122,11 @@ A customized Miryoku QWERTY. Differences from stock Miryoku:
   `TD(U_TD_BOOT)` on the **upper outer pinky of the mod hand** — top-left `[0]`
   for the left-mod layers (NAV, MOUSE), top-right `[9]` for the right-mod layers
   (MEDIA, FUN). One per layer; no other boot keys on those layers.
-- **`Ctrl+Shift+Tab` / `Ctrl+Tab` on NAV**, on the two keys directly *under* the
-  left-hand Alt and Cmd mods (`LCTL(LSFT(KC_TAB))` under Alt, `LCTL(KC_TAB)` under
-  Cmd) — tab-switching under the same fingers you'd chord with.
+- **Tab-switching keys on NAV**, arranged around the left-hand Alt/Cmd mods so
+  they sit under the fingers you'd chord with. *Under* the mods: `Ctrl+Shift+Tab`
+  under Alt, `Ctrl+Tab` under Cmd (`LCTL(LSFT(KC_TAB))` / `LCTL(KC_TAB)`). *Above*
+  the mods (top row): `Cmd+Shift+Tab` above Alt, `Cmd+Tab` above Cmd
+  (`LGUI(LSFT(KC_TAB))` / `LGUI(KC_TAB)`).
 - **Base-layer switches (double-tap tap-dances).** Reuse the Miryoku engine's
   built-in per-layer default-layer tap-dances (`TD(U_TD_U_MOUSE)`,
   `TD(U_TD_U_BASE)`; double-tap → `default_layer_set`, so a single stray tap is
