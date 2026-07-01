@@ -63,8 +63,11 @@ def xlate(t):
         return "QK_BOOT"          # plain JSON can't express the tap dance
     m = re.match(r"TD\(U_TD_(U_\w+)\)$", t)
     if m and m.group(1) in ENUM:
-        # base-layer-switch tap dances -> render as the default-layer keycode
-        return "DF(%d)" % ENUM[m.group(1)]
+        # base-layer-switch tap dances -> render as the target layer's NAME.
+        # qmk_viewer has no DF()/layer-keycode parser and prints unknown keycodes
+        # verbatim (cf. its own TO(_QWERTY)->"QWERTY"), so the bare name shows the
+        # destination layer directly (e.g. "MOUSE", "BASE").
+        return m.group(1)[2:]
     for name, i in ENUM.items():
         t = t.replace(name, str(i))
     return t

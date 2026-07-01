@@ -153,7 +153,11 @@ void matrix_scan_user(void) {
   last_sent = timer_read();
 
   uint8_t report[U_QMK_VIEWER_REPORT_SIZE] = {0};
-  report[0] = get_highest_layer(layer_state);
+  // Include default_layer_state so a base-layer switch (e.g. TD(U_TD_U_MOUSE)
+  // makes MOUSE the default) is reported: layer_state alone stays empty when no
+  // momentary layer is active, so the viewer would otherwise render BASE while
+  // the board is locked on the new base layer.
+  report[0] = get_highest_layer(layer_state | default_layer_state);
   for (uint8_t i = 0; i < MATRIX_ROWS * MATRIX_COLS && i < (U_QMK_VIEWER_REPORT_SIZE - 1) * 8; i++) {
     if (matrix_is_on(i / MATRIX_COLS, i % MATRIX_COLS)) {
       report[1 + (i / 8)] |= 1 << (i % 8);
