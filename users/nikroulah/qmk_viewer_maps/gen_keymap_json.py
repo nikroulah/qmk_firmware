@@ -61,6 +61,10 @@ def xlate(t):
         return CLIP[t]
     if t == "TD(U_TD_BOOT)":
         return "QK_BOOT"          # plain JSON can't express the tap dance
+    m = re.match(r"TD\(U_TD_(U_\w+)\)$", t)
+    if m and m.group(1) in ENUM:
+        # base-layer-switch tap dances -> render as the default-layer keycode
+        return "DF(%d)" % ENUM[m.group(1)]
     for name, i in ENUM.items():
         t = t.replace(name, str(i))
     return t
