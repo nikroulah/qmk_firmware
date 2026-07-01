@@ -54,7 +54,7 @@
 #define MK_C_INTERVAL_0     50
 #define MK_C_OFFSET_1       50   // ACL1 = slow
 #define MK_C_INTERVAL_1     100
-#define MK_C_OFFSET_2       50   // ACL2 = fast
+#define MK_C_OFFSET_2       75   // ACL2 = fast
 #define MK_C_INTERVAL_2     50
 // scroll wheel (offset stays 1 = whole scroll clicks; speed set by interval)
 #define MK_W_OFFSET_UNMOD   1    // default scroll
