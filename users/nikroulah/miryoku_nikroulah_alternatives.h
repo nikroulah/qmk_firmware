@@ -64,7 +64,7 @@ U_NA,              U_NA,              U_NA,              U_NA,              U_NA
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_PIPE,           KC_LPRN,           KC_RPRN,           U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_NIKROULAH \
-U_NA,              U_NA,              U_NA,              U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),              \
+U_NA,              KC_BRID,           KC_BRIU,           U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),\
 KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_MPRV,           U_NA,              KC_MSTP,           KC_MNXT,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NA,              KC_MPLY,           KC_MUTE,           U_NA,              KC_TRNS,           U_NA,              U_NP,              U_NP
@@ -121,7 +121,7 @@ TD(U_TD_U_BASE),   U_NA,              LCTL(LSFT(KC_TAB)),LCTL(KC_TAB),      U_NA
 U_NP,              U_NP,              U_NP,              U_NA,              KC_TRNS,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_SWEEP \
-U_NA,              U_NA,              U_NA,              U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),              \
+U_NA,              KC_BRID,           KC_BRIU,           U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),\
 KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_MPRV,           U_NA,              KC_MSTP,           KC_MNXT,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NP,              KC_MPLY,           KC_MUTE,           U_NA,              KC_TRNS,           U_NP,              U_NP,              U_NP
