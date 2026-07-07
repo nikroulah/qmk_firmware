@@ -65,9 +65,11 @@ qmk flash -kb <board> -km nikroulah
   `qmk compile` and leaves flashing to the user.
 - Use `qmk compile`, **not** bare `make` — the avr toolchain is only on PATH
   inside the qmk wrapper (bare make fails with `gccversion Error 127`).
-- Firmware sizes on QMK 0.33.7 + Chordal Hold: skeletyl ~**26.5 KB**, sweep
-  ~**24.7 KB** (of 28.7 KB). More headroom than the old 0.20.6 build. Still watch
-  the size; `CONSOLE_ENABLE` does **not** fit; `RAW_ENABLE` is already on.
+- Firmware sizes on QMK 0.33.7 + Chordal Hold: skeletyl ~**26 KB**, sweep
+  ~**24.2 KB** (of 28.7 KB). More headroom than the old 0.20.6 build. Still watch
+  the size; `CONSOLE_ENABLE` does **not** fit. `RAW_ENABLE` is currently **off**
+  (the qmk_viewer indicator is disabled); flip it back to `yes` in
+  `users/nikroulah/rules.mk` to re-enable it.
 
 ## The files that matter (all edits live here)
 
@@ -75,7 +77,7 @@ qmk flash -kb <board> -km nikroulah
 |---|---|
 | `users/nikroulah/miryoku_nikroulah_alternatives.h` | The `MIRYOKU_ALTERNATIVES_*_NIKROULAH` (skeletyl) and `*_SWEEP` layer macros + `*_NIKROULAH_BLANK`. **Source of truth for both layouts.** Included from `config.h`. |
 | `users/nikroulah/config.h` | Our `MIRYOKU_CLIPBOARD_MAC`, mouse/tapping/caps-word settings, and the `#if defined(KEYBOARD_ferris_sweep)` block selecting `*_SWEEP` vs `*_NIKROULAH` macros (**how the two boards are differentiated**). Ends by `#include "../manna-harbour_miryoku/config.h"` to reuse the pristine engine config. |
-| `users/nikroulah/rules.mk` | The Miryoku feature flags (mirrors the engine's), `RAW_ENABLE = yes`, `INTROSPECTION_KEYMAP_C = nikroulah.c`, and `include users/manna-harbour_miryoku/post_rules.mk`. |
+| `users/nikroulah/rules.mk` | The Miryoku feature flags (mirrors the engine's), `RAW_ENABLE = no` (was `yes`; qmk_viewer indicator disabled), `INTROSPECTION_KEYMAP_C = nikroulah.c`, and `include users/manna-harbour_miryoku/post_rules.mk`. |
 | `users/nikroulah/nikroulah.c` | Copy of the engine keymap `.c` (keymaps[]/tap-dances/combos) **plus** our `get_tapping_term()` + `get_chordal_hold()` (home-row Shift behavior) and the qmk_viewer raw-HID block (`#if defined(RAW_ENABLE)`). The `.h` include is repointed to `../manna-harbour_miryoku/...`. Also carries the QMK-0.33 compat fixes the 2023 engine needed: `key_overrides` as a real `[]` array (introspection), `MS_*` mouse keycodes in the layer macros, `IGNORE_MOD_TAP_INTERRUPT` undef'd in `config.h`. If you re-sync from a newer engine `.c`, re-apply these. |
 | `layouts/community/split_3x5_{3,2}/nikroulah/` | `config.h` (`LAYOUT_miryoku` → `LAYOUT_split_3x5_{3,2}`) + empty `keymap.c`; the sweep dir also has `rules.mk` (`MIRYOKU_KLUDGE_THUMBCOMBOS=yes`). Mirror the `manna-harbour_miryoku` community dirs. |
 | `users/nikroulah/qmk_viewer_maps/{skeletyl,sweep}/keymap.json` | Render sources for qmk_viewer (see below). **Not daily-driver keymaps.** |
