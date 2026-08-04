@@ -143,3 +143,33 @@ KC_TRNS,           U_NA,              U_NA,              U_NA,              U_NA
 KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           U_NA,              KC_UNDS,           KC_DLR,            KC_PERC,           KC_CIRC,           KC_TILD,           \
 U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              KC_PLUS,           KC_EXLM,           KC_AT,             KC_HASH,           KC_COLN,           \
 U_NP,              U_NP,              U_NP,              U_NA,              KC_PIPE,           KC_LPRN,           KC_RPRN,           U_NP,              U_NP,              U_NP
+
+
+// ============================================================================
+// nikroulah ZSA Voyager layout (zsa/voyager, LAYOUT -- 2 thumbs/side).
+// The Voyager has physical keys Miryoku doesn't use (the top number row + the
+// outer pinky columns). Rather than fix a keycode onto them for every layer, we
+// expose 9 of them as EXTRA layer slots (E0..E8, appended past the normal thumb
+// row) so they're addressable PER LAYER. The Voyager's LAYOUT_miryoku (in
+// keyboards/zsa/voyager/keymaps/nikroulah/config.h) takes the usual 40 args plus
+// these 9 and routes them to:
+//   E0..E5 -> right-hand top row, inner->outer
+//   E6/E7/E8 -> right outer (6th) column on the three finger rows
+// Each Voyager layer = the matching SWEEP layer + its 9 extras. RGB controls
+// live on MEDIA's extras; every other layer leaves them inert (U_NA), so the
+// extra keys only do RGB while MEDIA is held and stay free for future per-layer
+// use. TOGGLE_LAYER_COLOR / RM_* are only ever expanded in the Voyager build.
+// ============================================================================
+
+#define U_EXTRAS_BLANK  U_NA,    U_NA,    U_NA,    U_NA,    U_NA,    U_NA,    U_NA,    U_NA,               U_NA
+#define U_EXTRAS_RGB    RM_VALD, RM_VALU, RM_HUED, RM_HUEU, RM_SATD, RM_SATU, RM_NEXT, TOGGLE_LAYER_COLOR, RM_TOGG
+
+#define MIRYOKU_ALTERNATIVES_BASE_VOYAGER    MIRYOKU_ALTERNATIVES_BASE_SWEEP,       U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_NAV_VOYAGER     MIRYOKU_ALTERNATIVES_NAV_SWEEP,        U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_MOUSE_VOYAGER   MIRYOKU_ALTERNATIVES_MOUSE_SWEEP,      U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_MEDIA_VOYAGER   MIRYOKU_ALTERNATIVES_MEDIA_SWEEP,      U_EXTRAS_RGB
+#define MIRYOKU_ALTERNATIVES_NUM_VOYAGER     MIRYOKU_ALTERNATIVES_NUM_SWEEP,        U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_SYM_VOYAGER     MIRYOKU_ALTERNATIVES_SYM_SWEEP,        U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_FUN_VOYAGER     MIRYOKU_ALTERNATIVES_FUN_SWEEP,        U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER  MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH, U_EXTRAS_BLANK
+#define MIRYOKU_ALTERNATIVES_VOYAGER_BLANK   MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK,  U_EXTRAS_BLANK
