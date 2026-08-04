@@ -74,3 +74,13 @@ void digitizer_set_position(float x, float y) {
     digitizer_state.dirty = true;
     digitizer_flush();
 }
+
+#ifdef DIGITIZER_MODE_TOUCHPAD
+// nikroulah forward-port from zsa/qmk_firmware (firmware25): default weak
+// touchpad hooks; a driver module (zsa/navigator_trackpad) overrides these.
+__attribute__((weak)) void digitizer_touchpad_init(void) {}
+
+__attribute__((weak)) bool digitizer_touchpad_task(void) {
+    return false;
+}
+#endif // DIGITIZER_MODE_TOUCHPAD

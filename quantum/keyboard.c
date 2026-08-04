@@ -93,6 +93,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef JOYSTICK_ENABLE
 #    include "joystick.h"
 #endif
+#ifdef DIGITIZER_MODE_TOUCHPAD
+// nikroulah forward-port (zsa firmware25): touchpad hook declarations.
+#    include "digitizer.h"
+#endif
 #ifdef HD44780_ENABLE
 #    include "hd44780.h"
 #endif
@@ -342,6 +346,11 @@ __attribute__((weak)) void keyboard_post_init_modules(void) {}
 void keyboard_post_init_quantum(void) {
     keyboard_post_init_modules();
     keyboard_post_init_kb();
+
+#ifdef DIGITIZER_MODE_TOUCHPAD
+    // nikroulah forward-port (zsa firmware25): init a Precision Touchpad driver.
+    digitizer_touchpad_init();
+#endif
 }
 
 /** \brief matrix_can_read
@@ -742,6 +751,13 @@ void keyboard_task(void) {
 #ifdef POINTING_DEVICE_ENABLE
     if (pointing_device_task()) {
         last_pointing_device_activity_trigger();
+        activity_has_occurred = true;
+    }
+#endif
+
+#ifdef DIGITIZER_MODE_TOUCHPAD
+    // nikroulah forward-port (zsa firmware25): poll a Precision Touchpad driver.
+    if (digitizer_touchpad_task()) {
         activity_has_occurred = true;
     }
 #endif

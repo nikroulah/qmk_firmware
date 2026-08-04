@@ -292,6 +292,12 @@ enum usb_endpoints {
 #define CDC_NOTIFICATION_EPSIZE 8
 #define CDC_EPSIZE 16
 #define JOYSTICK_EPSIZE 8
-#define DIGITIZER_EPSIZE 8
+// nikroulah forward-port (zsa firmware25): PTP touchpad reports need 64-byte
+// packets; the single-point digitizer stays at 8.
+#ifdef DIGITIZER_MODE_TOUCHPAD
+#    define DIGITIZER_EPSIZE 64
+#else
+#    define DIGITIZER_EPSIZE 8
+#endif
 
 uint16_t get_usb_descriptor(const uint16_t wValue, const uint16_t wIndex, const uint16_t wLength, const void** const DescriptorAddress);

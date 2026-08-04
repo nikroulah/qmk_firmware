@@ -81,4 +81,30 @@ void digitizer_set_position(float x, float y);
 
 void host_digitizer_send(digitizer_t *digitizer);
 
+#ifdef DIGITIZER_MODE_TOUCHPAD
+// nikroulah forward-port from zsa/qmk_firmware (firmware25): weak hooks + public
+// API for a Precision Touchpad driver module (e.g. zsa/navigator_trackpad).
+#    include "report.h"
+
+// Weak hook called once during keyboard_post_init_quantum(); a touchpad driver
+// module overrides it to init sensor hardware. Default no-op.
+void digitizer_touchpad_init(void);
+
+// Weak hook called from keyboard_task() each iteration; a touchpad driver reads
+// the sensor and emits USB reports. Return true if any report was sent. Default
+// no-op returning false.
+bool digitizer_touchpad_task(void);
+
+// Host-selected input mode: 0 = Mouse (boot/default per MS PTP spec), 3 =
+// Windows Precision Touchpad. Set by the host writing feature report 0x04.
+uint8_t digitizer_touchpad_get_input_mode(void);
+
+// Send a PTP multi-touch report (routed through USB_ENDPOINT_IN_DIGITIZER).
+void send_digitizer_touchpad(report_digitizer_touchpad_t *report);
+
+// Send a boot-mouse fallback report (report ID 0x06), used when the input mode
+// is Mouse (0).
+void send_digitizer_touchpad_mouse(report_digitizer_touchpad_mouse_t *report);
+#endif // DIGITIZER_MODE_TOUCHPAD
+
 /** \} */

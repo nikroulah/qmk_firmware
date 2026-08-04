@@ -25,7 +25,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "usb_device_state.h"
 
 #ifdef DIGITIZER_ENABLE
-#    include "digitizer.h"
+// nikroulah forward-port (zsa firmware25): use quantum/digitizer.h explicitly to
+// get digitizer_t. The (new) tmk_core/protocol/digitizer.h only carries the PTP
+// parametric defines and would otherwise shadow this bare include.
+#    include "quantum/digitizer.h"
 #endif
 
 #ifdef JOYSTICK_ENABLE
@@ -310,7 +313,9 @@ void host_joystick_send(joystick_t *joystick) {
 
 __attribute__((weak)) void send_joystick(report_joystick_t *report) {}
 
-#ifdef DIGITIZER_ENABLE
+// nikroulah forward-port (zsa firmware25): in touchpad (PTP) mode the driver
+// sends its own reports, so skip the standard single-point digitizer send path.
+#if defined(DIGITIZER_ENABLE) && !defined(DIGITIZER_MODE_TOUCHPAD)
 void host_digitizer_send(digitizer_t *digitizer) {
     report_digitizer_t report = {
 #    ifdef DIGITIZER_SHARED_EP
