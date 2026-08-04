@@ -68,15 +68,27 @@
 
 // Map every layer slot to the layout for the board being built. Both layouts
 // are defined in miryoku_nikroulah_alternatives.h (included below). The
-// skeletyl (split_3x5_3) is the default; the sweep (split_3x5_2) is a separate,
-// simpler layout selected by keyboard. The ZSA Voyager has only 2 thumbs/side,
-// so it reuses the sweep layout (its LAYOUT_miryoku mapping lives in
-// keyboards/zsa/voyager/keymaps/nikroulah/config.h). Neither board uses the
-// EXTRA/TAP slots anymore (num/sym are on Q/W letter-holds), so both point at a
-// blank layer.
-#define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
-#define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
-#if defined(KEYBOARD_ferris_sweep) || defined(KEYBOARD_zsa_voyager)
+// skeletyl (split_3x5_3) is the default. The sweep (split_3x5_2) is a separate,
+// simpler layout. The ZSA Voyager uses the sweep layout PLUS 9 extra per-layer
+// slots for its otherwise-unused physical keys (see *_VOYAGER in
+// miryoku_nikroulah_alternatives.h; the LAYOUT_miryoku that routes them lives in
+// keyboards/zsa/voyager/keymaps/nikroulah/config.h). No board uses the EXTRA/TAP
+// slots (num/sym are on Q/W letter-holds), so they point at a blank layer -- the
+// Voyager's blank still carries the 9 inert extra slots.
+#if defined(KEYBOARD_zsa_voyager)
+  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_VOYAGER_BLANK
+  #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_VOYAGER_BLANK
+  #define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_VOYAGER
+  #define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER
+  #define MIRYOKU_LAYER_NAV    MIRYOKU_ALTERNATIVES_NAV_VOYAGER
+  #define MIRYOKU_LAYER_MOUSE  MIRYOKU_ALTERNATIVES_MOUSE_VOYAGER
+  #define MIRYOKU_LAYER_MEDIA  MIRYOKU_ALTERNATIVES_MEDIA_VOYAGER
+  #define MIRYOKU_LAYER_NUM    MIRYOKU_ALTERNATIVES_NUM_VOYAGER
+  #define MIRYOKU_LAYER_SYM    MIRYOKU_ALTERNATIVES_SYM_VOYAGER
+  #define MIRYOKU_LAYER_FUN    MIRYOKU_ALTERNATIVES_FUN_VOYAGER
+#elif defined(KEYBOARD_ferris_sweep)
+  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
+  #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
   #define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_SWEEP
   #define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH
   #define MIRYOKU_LAYER_NAV    MIRYOKU_ALTERNATIVES_NAV_SWEEP
@@ -86,6 +98,8 @@
   #define MIRYOKU_LAYER_SYM    MIRYOKU_ALTERNATIVES_SYM_SWEEP
   #define MIRYOKU_LAYER_FUN    MIRYOKU_ALTERNATIVES_FUN_SWEEP
 #else
+  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
+  #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
   #define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_NIKROULAH
   #define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH
   #define MIRYOKU_LAYER_NAV    MIRYOKU_ALTERNATIVES_NAV_NIKROULAH

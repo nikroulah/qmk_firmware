@@ -329,6 +329,21 @@ multitouch)** onto our 0.33.7 base (ZSA's `firmware25` fork is ~1064 commits
   compat fixes). The reference sources were `zsa/qmk_firmware@firmware25` +
   `zsa/qmk_modules@d618614`.
 
+**Voyager extra keys (RGB controls).** The Voyager has physical keys Miryoku
+doesn't use (top number row + outer pinky columns). We expose **9 of them as
+extra per-layer slots** (`E0..E8`) rather than fixing keycodes onto them:
+- The Voyager's `LAYOUT_miryoku` takes the usual 40 args **plus** `E0..E8` and
+  routes them (`E0..E5`→right top row inner→outer; `E6/E7/E8`→right outer column,
+  the three finger rows). Sweep/skeletyl `LAYOUT_miryoku` stay 40-arg.
+- Each Voyager layer = the matching `*_SWEEP` macro + its 9 extras
+  (`*_VOYAGER` in `miryoku_nikroulah_alternatives.h`). `U_EXTRAS_BLANK` = 9× `U_NA`;
+  `U_EXTRAS_RGB` (MEDIA only) = brightness -/+, hue -/+, sat -/+, next-anim,
+  `TOGGLE_LAYER_COLOR`, `RM_TOGG`. So RGB works **only while MEDIA is held**; the
+  keys are free (inert) on every other layer for future per-layer use.
+- This is how to add per-layer keys to the Voyager's spare keys generally: add a
+  slot to `LAYOUT_miryoku`, add a token to each `*_VOYAGER` macro. `TOGGLE_LAYER_COLOR`
+  is inert until a per-layer ledmap exists (the not-yet-done "goal 2").
+
 ## Gotchas
 
 - QMK Configurator emits `LCSG(kc)` for mac screenshots — **not a valid QMK
