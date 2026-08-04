@@ -58,6 +58,21 @@ static bool __attribute__((__unused__)) send_report_buffered(usb_endpoint_in_lut
 static void __attribute__((__unused__)) flush_report_buffered(usb_endpoint_in_lut_t endpoint, bool padded);
 static bool __attribute__((__unused__)) receive_report(usb_endpoint_out_lut_t endpoint, void *report, size_t size);
 
+#ifdef DIGITIZER_MODE_TOUCHPAD
+// nikroulah forward-port (zsa firmware25): host-selected PTP input mode.
+// 0 = Mouse (boot/default per spec), 3 = Windows Precision Touchpad. The host
+// writes feature report 0x04 to switch.
+static uint8_t digitizer_touchpad_input_mode = 0;
+
+uint8_t digitizer_touchpad_get_input_mode(void) {
+    return digitizer_touchpad_input_mode;
+}
+
+static void digitizer_touchpad_set_input_mode(uint8_t mode) {
+    digitizer_touchpad_input_mode = mode;
+}
+#endif
+
 /* ---------------------------------------------------------
  *            Descriptors and USB driver objects
  * ---------------------------------------------------------
@@ -246,6 +261,19 @@ static void set_led_transfer_cb(USBDriver *usbp) {
     }
 }
 
+#ifdef DIGITIZER_MODE_TOUCHPAD
+// nikroulah forward-port (zsa firmware25): completion callback for a SET_REPORT
+// on the touchpad interface -- feature report 0x04 carries the input mode.
+static void digitizer_touchpad_set_input_mode_cb(USBDriver *usbp) {
+    usb_control_request_t *setup = (usb_control_request_t *)usbp->setup;
+    uint8_t report_id = setup->wValue.lbyte;
+
+    if (report_id == 0x04 && setup->wLength >= 2) {
+        digitizer_touchpad_set_input_mode(set_report_buf[1]);
+    }
+}
+#endif
+
 static bool usb_requests_hook_cb(USBDriver *usbp) {
     usb_control_request_t *setup = (usb_control_request_t *)usbp->setup;
 
@@ -279,6 +307,12 @@ static bool usb_requests_hook_cb(USBDriver *usbp) {
 #endif
                                 usbSetupTransfer(usbp, set_report_buf, sizeof(set_report_buf), set_led_transfer_cb);
                                 return true;
+#ifdef DIGITIZER_MODE_TOUCHPAD
+                            // nikroulah forward-port (zsa firmware25): PTP input-mode switch.
+                            case DIGITIZER_INTERFACE:
+                                usbSetupTransfer(usbp, set_report_buf, sizeof(set_report_buf), digitizer_touchpad_set_input_mode_cb);
+                                return true;
+#endif
                         }
                         break;
                     case HID_REQ_SetProtocol:
@@ -488,6 +522,18 @@ void send_digitizer(report_digitizer_t *report) {
     send_report(USB_ENDPOINT_IN_DIGITIZER, report, sizeof(report_digitizer_t));
 #endif
 }
+
+#ifdef DIGITIZER_MODE_TOUCHPAD
+// nikroulah forward-port (zsa firmware25): PTP report senders over the digitizer
+// endpoint.
+void send_digitizer_touchpad(report_digitizer_touchpad_t *report) {
+    send_report(USB_ENDPOINT_IN_DIGITIZER, report, sizeof(report_digitizer_touchpad_t));
+}
+
+void send_digitizer_touchpad_mouse(report_digitizer_touchpad_mouse_t *report) {
+    send_report(USB_ENDPOINT_IN_DIGITIZER, report, sizeof(report_digitizer_touchpad_mouse_t));
+}
+#endif
 
 /* ---------------------------------------------------------
  *                   Console functions
