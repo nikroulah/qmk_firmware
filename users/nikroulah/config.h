@@ -69,11 +69,14 @@
 // Map every layer slot to the layout for the board being built. Both layouts
 // are defined in miryoku_nikroulah_alternatives.h (included below). The
 // skeletyl (split_3x5_3) is the default; the sweep (split_3x5_2) is a separate,
-// simpler layout selected by keyboard. Neither board uses the EXTRA/TAP slots
-// anymore (num/sym are on Q/W letter-holds), so both point at a blank layer.
+// simpler layout selected by keyboard. The ZSA Voyager has only 2 thumbs/side,
+// so it reuses the sweep layout (its LAYOUT_miryoku mapping lives in
+// keyboards/zsa/voyager/keymaps/nikroulah/config.h). Neither board uses the
+// EXTRA/TAP slots anymore (num/sym are on Q/W letter-holds), so both point at a
+// blank layer.
 #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
 #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK
-#if defined(KEYBOARD_ferris_sweep)
+#if defined(KEYBOARD_ferris_sweep) || defined(KEYBOARD_zsa_voyager)
   #define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_SWEEP
   #define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH
   #define MIRYOKU_LAYER_NAV    MIRYOKU_ALTERNATIVES_NAV_SWEEP
