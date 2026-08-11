@@ -349,9 +349,9 @@ onto them:
 **Voyager gaming layer (EXTRA slot).** The unused `EXTRA` layer is repurposed
 (Voyager only) as a plain full-QWERTY base — no home-row mods, no layer-taps:
 - `MIRYOKU_ALTERNATIVES_GAME_VOYAGER` (+ `U_EXTRAS_GAME`) uses all 52 keys:
-  numbers on the top row, `Esc/Tab/LShift/LCtrl` (left pinky col) + `fn/RShift`
-  and the exit tap-dance (right pinky col), plain alphas, `Space/LGUI` +
-  `MS_BTN1/MS_BTN2` on the thumbs.
+  numbers on the top row (right pinky = Backspace), `Esc/Tab/LShift/LCtrl` (left
+  pinky col) + `fn/RShift` and the exit tap-dance (right pinky col), plain alphas,
+  `Space/LAlt` + `MS_BTN1/MS_BTN2` on the thumbs.
 - **Enter** via `U_GAME_SWITCH` = `TD(U_TD_U_EXTRA)` (double-tap → EXTRA becomes
   the default base), placed at slot `[7]` on MEDIA/FUN, next to the MOUSE-layer
   switch. `U_GAME_SWITCH` is `U_NA` on non-Voyager boards, so the shared
@@ -360,8 +360,9 @@ onto them:
 - **fn key** (`E6`, the old backslash slot) = `MO(U_TAP)`. The **TAP slot** is
   repurposed (Voyager only) as the gaming fn layer
   (`MIRYOKU_ALTERNATIVES_GAMEFN_VOYAGER` + `U_EXTRAS_FN`): hold it and the number
-  row → F-keys (`1..0`→`F1..F10`, `-`→`F11`, `Esc`→`F12`); everything else is
-  `KC_TRNS` so it falls through to the gaming layer. Backslash was dropped.
+  row → F-keys (`1..0`→`F1..F10`, `Esc`→`F12`), and the Backspace key → `LGUI`;
+  everything else is `KC_TRNS` so it falls through to the gaming layer. Backslash
+  was dropped.
 - **Auto Shift is disabled** on this layer via `default_layer_state_set_user` in
   `nikroulah.c` (checks `get_highest_layer(state) == U_EXTRA`; inert on
   skeletyl/sweep, where EXTRA is never a default layer).
