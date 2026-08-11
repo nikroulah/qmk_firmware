@@ -177,16 +177,16 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 
 #define U_EXTRAS_BLANK  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
 #define U_EXTRAS_RGB    RM_VALD, RM_VALU, RM_HUED, RM_HUEU, RM_SATD, RM_SATU, RM_NEXT, TOGGLE_LAYER_COLOR, RM_TOGG,  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
-// Gaming layer extras: E0..E5 = numbers 6..0 + hyphen (right top row); E6..E8 =
+// Gaming layer extras: E0..E5 = numbers 6..0 + Backspace (right top row); E6..E8 =
 // fn (momentary TAP layer, holds for F-keys), RShift, tap-dance back to BASE
 // (right pinky column); E9..E14 = Esc + numbers 1..5 (left top row); E15..E17 =
 // Tab, LShift, LCtrl (left pinky column). E6 replaces the dropped backslash.
-#define U_EXTRAS_GAME   KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS,  MO(U_TAP), KC_RSFT, TD(U_TD_U_BASE),  KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5,  KC_TAB, KC_LSFT, KC_LCTL
+#define U_EXTRAS_GAME   KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,  MO(U_TAP), KC_RSFT, TD(U_TD_U_BASE),  KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5,  KC_TAB, KC_LSFT, KC_LCTL
 // Gaming fn-layer extras (the TAP slot, held via MO(U_TAP) from the gaming
-// layer): the number row becomes F-keys -- 1..0 -> F1..F10, hyphen -> F11, Esc ->
-// F12. Everything else is KC_TRNS so it falls through to the gaming layer (WASD,
-// mods, thumbs, mouse buttons still work while fn is held).
-#define U_EXTRAS_FN     KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_F12, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,  KC_TRNS, KC_TRNS, KC_TRNS
+// layer): the number row becomes F-keys -- 1..0 -> F1..F10, Esc -> F12; the
+// Backspace key (E5) becomes LGUI. Everything else is KC_TRNS so it falls through
+// to the gaming layer (WASD, mods, thumbs, mouse buttons still work while fn held).
+#define U_EXTRAS_FN     KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_LGUI,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_F12, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,  KC_TRNS, KC_TRNS, KC_TRNS
 
 #define MIRYOKU_ALTERNATIVES_BASE_VOYAGER    MIRYOKU_ALTERNATIVES_BASE_SWEEP,       U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_NAV_VOYAGER     MIRYOKU_ALTERNATIVES_NAV_SWEEP,        U_EXTRAS_BLANK
@@ -207,7 +207,7 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 KC_Q,              KC_W,              KC_E,              KC_R,              KC_T,              KC_Y,              KC_U,              KC_I,              KC_O,              KC_P,              \
 KC_A,              KC_S,              KC_D,              KC_F,              KC_G,              KC_H,              KC_J,              KC_K,              KC_L,              KC_SCLN,           \
 KC_Z,              KC_X,              KC_C,              KC_V,              KC_B,              KC_N,              KC_M,              KC_COMM,           KC_DOT,            KC_SLSH,           \
-U_NP,              U_NP,              U_NP,              KC_SPC,            KC_LGUI,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP,              \
+U_NP,              U_NP,              U_NP,              KC_SPC,            KC_LALT,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP,              \
 U_EXTRAS_GAME
 
 // Gaming fn layer (Voyager TAP slot), held via MO(U_TAP) from the gaming layer.
