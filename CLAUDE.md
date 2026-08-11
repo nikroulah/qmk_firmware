@@ -353,7 +353,15 @@ extra per-layer slots** (`E0..E8`) rather than fixing keycodes onto them:
   Shifts A+' together) and a `CW_TOGG` key on the BUTTON layer's V and M keys.
   Active: mod-taps/layer-taps (`TAPPING_TERM 200`, default mod-tap-interrupt,
   `QUICK_TAP_TERM 0`), **Chordal Hold** + **Permissive Hold** on the home-row
-  mods (see layout), Auto Shift on non-alphas, mouse keys, media keys.
+  mods (see layout), **Flow Tap** (`FLOW_TAP_TERM 150`), Auto Shift on
+  non-alphas, mouse keys, media keys.
+- **Flow Tap** (`#define FLOW_TAP_TERM 150` in `config.h`): a mod-tap/layer-tap
+  pressed within 150 ms of the preceding key forces its *tap* (both keys must be
+  in the QWERTY default set: alphas, `,./;` or Space). Kills accidental mods
+  during fast typing and cuts tap latency. Complements Chordal Hold (same-hand
+  rolls) by also catching fast cross-hand rolls via inter-key timing; suppressed
+  while a tap-hold is undecided, so mod chording still works. Applies to all
+  three boards. Bumped AVR firmware ~0.7 KB (skeletyl now ~93%).
 
 ## Updating QMK
 

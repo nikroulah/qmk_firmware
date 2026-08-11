@@ -40,6 +40,16 @@
 // Chordal Hold, so Permissive Hold can't reintroduce same-hand accidental mods.)
 #define PERMISSIVE_HOLD
 
+// Flow Tap: when a mod-tap/layer-tap is pressed within 150ms of the preceding
+// key (and both are alphas/,./;/ or Space -- the QWERTY default set), force its
+// TAP. This kills accidental mods during fast typing and cuts tap latency (the
+// tap is sent immediately). Complements Chordal Hold: same-hand rolls are still
+// caught by Chordal Hold, and Flow Tap additionally catches fast cross-hand
+// rolls by inter-key timing. Deliberate mod use still works -- Flow Tap is
+// suppressed while a tap-hold key is undecided, so mod chording is unaffected.
+// 150ms is the QMK-recommended starting point. Applies to all three boards.
+#define FLOW_TAP_TERM 150
+
 // Mouse keys: constant-speed mode with momentary acceleration. No acceleration
 // ramp -- the cursor/scroll move at a fixed default speed; holding the MOUSE
 // layer's ACL0/ACL1/ACL2 keys momentarily selects slow / medium / fast (this
