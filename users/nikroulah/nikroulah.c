@@ -128,6 +128,21 @@ combo_t key_combos[COMBO_COUNT] = {
 #endif
 
 
+// Disable Auto Shift on the Voyager "gaming" layer (the EXTRA slot, made the
+// default base by TD(U_TD_U_EXTRA)). Its number/symbol keys should behave like a
+// normal keyboard -- a held key repeats, it does not send the shifted form. The
+// gaming layer only ever exists (and only EXTRA is ever a default layer) on the
+// Voyager, so this hook is inert on the skeletyl/sweep.
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+  if (get_highest_layer(state) == U_EXTRA) {
+    autoshift_disable();
+  } else {
+    autoshift_enable();
+  }
+  return state;
+}
+
+
 // qmk_viewer live indicator (https://github.com/thooams/qmk_viewer)
 // Sends a 32-byte raw HID report at most every 50ms (byte 0 = active layer,
 // remaining bytes = a bitmap of pressed matrix keys) from matrix_scan_user.

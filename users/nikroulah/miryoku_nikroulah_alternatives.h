@@ -64,7 +64,7 @@ U_NA,              U_NA,              U_NA,              U_NA,              U_NA
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_PIPE,           KC_LPRN,           KC_RPRN,           U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_NIKROULAH \
-U_NA,              KC_BRID,           KC_BRIU,           U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),\
+U_NA,              KC_BRID,           KC_BRIU,           U_NA,              KC_EJCT,           U_NA,              U_NA,              U_GAME_SWITCH,     TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),\
 KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_MPRV,           U_NA,              KC_MSTP,           KC_MNXT,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NA,              KC_MPLY,           KC_MUTE,           U_NA,              KC_TRNS,           U_NA,              U_NP,              U_NP
@@ -81,7 +81,7 @@ U_NP,              U_NP,              U_NA,              U_NA,              U_NA
 // F-keys on the LEFT hand (mods on the right), so it's comfortable held by the
 // right-outer (Bspc) thumb. Mirrors the sweep's FUN.
 #define MIRYOKU_ALTERNATIVES_FUN_NIKROULAH \
-KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),     \
+KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_GAME_SWITCH,     TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),     \
 KC_F11,            KC_F4,             KC_F5,             KC_F6,             LCTL(LSFT(LGUI(KC_4))),U_NA,          KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_F10,            KC_F1,             KC_F2,             KC_F3,             LCTL(LSFT(LGUI(KC_3))),U_NA,          U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_TRNS,           U_NA,              U_NA,              U_NP,              U_NP
@@ -121,13 +121,13 @@ TD(U_TD_U_BASE),   U_NA,              LCTL(LSFT(KC_TAB)),LCTL(KC_TAB),      U_NA
 U_NP,              U_NP,              U_NP,              U_NA,              KC_TRNS,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_SWEEP \
-U_NA,              KC_BRID,           KC_BRIU,           U_NA,              KC_EJCT,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),\
+U_NA,              KC_BRID,           KC_BRIU,           U_NA,              KC_EJCT,           U_NA,              U_NA,              U_GAME_SWITCH,     TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),\
 KC_MRWD,           KC_VOLD,           KC_VOLU,           KC_MFFD,           U_NA,              U_NA,              KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_MPRV,           U_NA,              KC_MSTP,           KC_MNXT,           U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NP,              KC_MPLY,           KC_MUTE,           U_NA,              KC_TRNS,           U_NP,              U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_FUN_SWEEP \
-KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_NA,              TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),     \
+KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              U_NA,              U_GAME_SWITCH,     TD(U_TD_U_MOUSE),  TD(U_TD_BOOT),     \
 KC_F11,            KC_F4,             KC_F5,             KC_F6,             LCTL(LSFT(LGUI(KC_4))),U_NA,          KC_RGUI,           KC_RALT,           KC_RCTL,           KC_RSFT,           \
 KC_F10,            KC_F1,             KC_F2,             KC_F3,             LCTL(LSFT(LGUI(KC_3))),U_NA,          U_NA,              U_NA,              U_NA,              U_NA,              \
 U_NP,              U_NP,              U_NP,              U_NA,              U_NA,              KC_TRNS,           U_NA,              U_NP,              U_NP,              U_NP
@@ -147,22 +147,46 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 
 // ============================================================================
 // nikroulah ZSA Voyager layout (zsa/voyager, LAYOUT -- 2 thumbs/side).
-// The Voyager has physical keys Miryoku doesn't use (the top number row + the
-// outer pinky columns). Rather than fix a keycode onto them for every layer, we
-// expose 9 of them as EXTRA layer slots (E0..E8, appended past the normal thumb
-// row) so they're addressable PER LAYER. The Voyager's LAYOUT_miryoku (in
+// The Voyager has 18 physical keys Miryoku doesn't use (the top number row + the
+// outer pinky columns, both hands). Rather than fix a keycode onto them for every
+// layer, we expose all 18 as EXTRA layer slots (E0..E17, appended past the normal
+// thumb row) so they're addressable PER LAYER. The Voyager's LAYOUT_miryoku (in
 // keyboards/zsa/voyager/keymaps/nikroulah/config.h) takes the usual 40 args plus
-// these 9 and routes them to:
-//   E0..E5 -> right-hand top row, inner->outer
-//   E6/E7/E8 -> right outer (6th) column on the three finger rows
-// Each Voyager layer = the matching SWEEP layer + its 9 extras. RGB controls
-// live on MEDIA's extras; every other layer leaves them inert (U_NA), so the
-// extra keys only do RGB while MEDIA is held and stay free for future per-layer
-// use. TOGGLE_LAYER_COLOR / RM_* are only ever expanded in the Voyager build.
+// these 18 and routes them to:
+//   E0..E5   -> right-hand top row, inner->outer
+//   E6/E7/E8 -> right outer (6th) column, the three finger rows
+//   E9..E14  -> left-hand top row, outer(pinky)->inner
+//   E15/E16/E17 -> left outer (6th) column, the three finger rows
+// Each Voyager layer = the matching SWEEP layer + its 18 extras. Uses so far:
+//   - MEDIA: RGB controls on the right-side extras (E0..E8); left extras inert.
+//   - EXTRA (repurposed as a "gaming" base layer): a plain full QWERTY that uses
+//     ALL the extras -- numbers on the top row, esc/tab/shift/ctrl and
+//     -/\/rshift on the pinky columns. See U_EXTRAS_GAME / GAME_VOYAGER below.
+// Every other layer leaves the extras inert (U_NA).
+// U_GAME_SWITCH is the tap-dance that makes the gaming layer the default base;
+// it sits next to the MOUSE-layer switch on MEDIA/FUN. It resolves to U_NA on
+// non-Voyager boards, so the shared MEDIA/FUN macros stay byte-identical there.
+// TOGGLE_LAYER_COLOR / RM_* / the gaming keys are only expanded in the Voyager build.
 // ============================================================================
 
-#define U_EXTRAS_BLANK  U_NA,    U_NA,    U_NA,    U_NA,    U_NA,    U_NA,    U_NA,    U_NA,               U_NA
-#define U_EXTRAS_RGB    RM_VALD, RM_VALU, RM_HUED, RM_HUEU, RM_SATD, RM_SATU, RM_NEXT, TOGGLE_LAYER_COLOR, RM_TOGG
+#if defined(KEYBOARD_zsa_voyager)
+#    define U_GAME_SWITCH TD(U_TD_U_EXTRA)   // double-tap -> gaming layer is default base
+#else
+#    define U_GAME_SWITCH U_NA
+#endif
+
+#define U_EXTRAS_BLANK  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
+#define U_EXTRAS_RGB    RM_VALD, RM_VALU, RM_HUED, RM_HUEU, RM_SATD, RM_SATU, RM_NEXT, TOGGLE_LAYER_COLOR, RM_TOGG,  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
+// Gaming layer extras: E0..E5 = numbers 6..0 + hyphen (right top row); E6..E8 =
+// fn (momentary TAP layer, holds for F-keys), RShift, tap-dance back to BASE
+// (right pinky column); E9..E14 = Esc + numbers 1..5 (left top row); E15..E17 =
+// Tab, LShift, LCtrl (left pinky column). E6 replaces the dropped backslash.
+#define U_EXTRAS_GAME   KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS,  MO(U_TAP), KC_RSFT, TD(U_TD_U_BASE),  KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5,  KC_TAB, KC_LSFT, KC_LCTL
+// Gaming fn-layer extras (the TAP slot, held via MO(U_TAP) from the gaming
+// layer): the number row becomes F-keys -- 1..0 -> F1..F10, hyphen -> F11, Esc ->
+// F12. Everything else is KC_TRNS so it falls through to the gaming layer (WASD,
+// mods, thumbs, mouse buttons still work while fn is held).
+#define U_EXTRAS_FN     KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_F12, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,  KC_TRNS, KC_TRNS, KC_TRNS
 
 #define MIRYOKU_ALTERNATIVES_BASE_VOYAGER    MIRYOKU_ALTERNATIVES_BASE_SWEEP,       U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_NAV_VOYAGER     MIRYOKU_ALTERNATIVES_NAV_SWEEP,        U_EXTRAS_BLANK
@@ -173,3 +197,25 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 #define MIRYOKU_ALTERNATIVES_FUN_VOYAGER     MIRYOKU_ALTERNATIVES_FUN_SWEEP,        U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER  MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH, U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_VOYAGER_BLANK   MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK,  U_EXTRAS_BLANK
+
+// Gaming base layer (Voyager EXTRA slot): plain full QWERTY -- no home-row mods,
+// no layer-taps. Dedicated mods on the pinky columns/thumb; mouse buttons on the
+// right thumbs; numbers on the top row. Exit via the tap-dance on the right pinky
+// bottom (E8 -> TD(U_TD_U_BASE)). Auto Shift is disabled on this layer in
+// nikroulah.c (default_layer_state_set_user).
+#define MIRYOKU_ALTERNATIVES_GAME_VOYAGER \
+KC_Q,              KC_W,              KC_E,              KC_R,              KC_T,              KC_Y,              KC_U,              KC_I,              KC_O,              KC_P,              \
+KC_A,              KC_S,              KC_D,              KC_F,              KC_G,              KC_H,              KC_J,              KC_K,              KC_L,              KC_SCLN,           \
+KC_Z,              KC_X,              KC_C,              KC_V,              KC_B,              KC_N,              KC_M,              KC_COMM,           KC_DOT,            KC_SLSH,           \
+U_NP,              U_NP,              U_NP,              KC_SPC,            KC_LGUI,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP,              \
+U_EXTRAS_GAME
+
+// Gaming fn layer (Voyager TAP slot), held via MO(U_TAP) from the gaming layer.
+// The whole 40-key Miryoku block is KC_TRNS so it falls through to the gaming
+// layer; only the top-row extras become F-keys (see U_EXTRAS_FN).
+#define MIRYOKU_ALTERNATIVES_GAMEFN_VOYAGER \
+KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           \
+KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           \
+KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           \
+U_NP,              U_NP,              U_NP,              KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           U_NP,              U_NP,              U_NP,              \
+U_EXTRAS_FN
