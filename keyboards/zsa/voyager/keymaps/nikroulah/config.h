@@ -25,24 +25,27 @@
 //     right inner/outer, matching the sweep's inner/outer thumb assignment.
 // Every unused physical key is KC_NO. (One expected tradeoff of 5-on-6: the
 // right pinky ' lands on the physical ; keycap; the printed ' cap is unused.)
-// The usual 40 Miryoku args, plus 9 EXTRA slots (E0..E8) for the Voyager's
-// otherwise-unused physical keys. Each layer supplies its own E0..E8 (see the
+// The usual 40 Miryoku args, plus 18 EXTRA slots (E0..E17) for the Voyager's
+// otherwise-unused physical keys. Each layer supplies its own E0..E17 (see the
 // *_VOYAGER macros in users/nikroulah/miryoku_nikroulah_alternatives.h), so the
-// extra keys are addressable per layer -- inert on most layers, RGB on MEDIA.
-//   E0..E5 -> right-hand top row, inner->outer
-//   E6 / E7 / E8 -> right outer (6th) column on the three finger rows
-// The left-hand top row and left outer column stay KC_NO (unmapped for now).
+// extra keys are addressable per layer -- inert on most layers, RGB on MEDIA, a
+// full gaming layer on EXTRA.
+//   E0..E5      -> right-hand top row, inner->outer
+//   E6 / E7 / E8   -> right outer (6th) column, the three finger rows
+//   E9..E14     -> left-hand top row, outer(pinky)->inner
+//   E15 / E16 / E17 -> left outer (6th) column, the three finger rows
 #define LAYOUT_miryoku( \
 K00,   K01,   K02,   K03,   K04,          K05,   K06,   K07,   K08,   K09, \
 K10,   K11,   K12,   K13,   K14,          K15,   K16,   K17,   K18,   K19, \
 K20,   K21,   K22,   K23,   K24,          K25,   K26,   K27,   K28,   K29, \
 N30,   N31,   K32,   K33,   K34,          K35,   K36,   K37,   N38,   N39, \
-E0,    E1,    E2,    E3,    E4,    E5,    E6,    E7,    E8 \
+E0,    E1,    E2,    E3,    E4,    E5,    E6,    E7,    E8, \
+E9,    E10,   E11,   E12,   E13,   E14,   E15,   E16,   E17 \
 ) \
 LAYOUT( \
-KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,       E0,    E1,    E2,    E3,    E4,    E5,   \
-KC_NO, K00,   K01,   K02,   K03,   K04,          K05,   K06,   K07,   K08,   K09,   E6,   \
-KC_NO, K10,   K11,   K12,   K13,   K14,          K15,   K16,   K17,   K18,   K19,   E7,   \
-KC_NO, K20,   K21,   K22,   K23,   K24,          K25,   K26,   K27,   K28,   K29,   E8,   \
+E9,    E10,   E11,   E12,   E13,   E14,     E0,    E1,    E2,    E3,    E4,    E5,   \
+E15,   K00,   K01,   K02,   K03,   K04,      K05,   K06,   K07,   K08,   K09,   E6,   \
+E16,   K10,   K11,   K12,   K13,   K14,      K15,   K16,   K17,   K18,   K19,   E7,   \
+E17,   K20,   K21,   K22,   K23,   K24,      K25,   K26,   K27,   K28,   K29,   E8,   \
                             K33,   K34,          K35,   K36 \
 )

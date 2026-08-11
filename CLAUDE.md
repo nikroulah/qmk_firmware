@@ -329,20 +329,42 @@ multitouch)** onto our 0.33.7 base (ZSA's `firmware25` fork is ~1064 commits
   compat fixes). The reference sources were `zsa/qmk_firmware@firmware25` +
   `zsa/qmk_modules@d618614`.
 
-**Voyager extra keys (RGB controls).** The Voyager has physical keys Miryoku
-doesn't use (top number row + outer pinky columns). We expose **9 of them as
-extra per-layer slots** (`E0..E8`) rather than fixing keycodes onto them:
-- The Voyager's `LAYOUT_miryoku` takes the usual 40 args **plus** `E0..E8` and
-  routes them (`E0..E5`→right top row inner→outer; `E6/E7/E8`→right outer column,
-  the three finger rows). Sweep/skeletyl `LAYOUT_miryoku` stay 40-arg.
-- Each Voyager layer = the matching `*_SWEEP` macro + its 9 extras
-  (`*_VOYAGER` in `miryoku_nikroulah_alternatives.h`). `U_EXTRAS_BLANK` = 9× `U_NA`;
-  `U_EXTRAS_RGB` (MEDIA only) = brightness -/+, hue -/+, sat -/+, next-anim,
-  `TOGGLE_LAYER_COLOR`, `RM_TOGG`. So RGB works **only while MEDIA is held**; the
-  keys are free (inert) on every other layer for future per-layer use.
-- This is how to add per-layer keys to the Voyager's spare keys generally: add a
-  slot to `LAYOUT_miryoku`, add a token to each `*_VOYAGER` macro. `TOGGLE_LAYER_COLOR`
-  is inert until a per-layer ledmap exists (the not-yet-done "goal 2").
+**Voyager extra keys (per-layer spare keys).** The Voyager has **18 physical keys
+Miryoku doesn't use** (top number row + outer pinky columns, both hands). We
+expose all 18 as **extra per-layer slots** (`E0..E17`) rather than fixing keycodes
+onto them:
+- The Voyager's `LAYOUT_miryoku` takes the usual 40 args **plus** `E0..E17` and
+  routes them (`E0..E5`→right top row inner→outer; `E6/E7/E8`→right outer column
+  finger rows; `E9..E14`→left top row outer→inner; `E15/E16/E17`→left outer column
+  finger rows). Sweep/skeletyl `LAYOUT_miryoku` stay 40-arg.
+- Each Voyager layer = the matching `*_SWEEP` macro + its 18 extras
+  (`*_VOYAGER` in `miryoku_nikroulah_alternatives.h`). `U_EXTRAS_BLANK` = 18× `U_NA`.
+  Uses so far: **MEDIA** `U_EXTRAS_RGB` (right-side RGB: brightness/hue/sat -/+,
+  next-anim, `TOGGLE_LAYER_COLOR`, `RM_TOGG` — works only while MEDIA is held);
+  **EXTRA** = the gaming layer (below). `TOGGLE_LAYER_COLOR` is inert until a
+  per-layer ledmap exists (the not-yet-done "goal 2").
+- To add per-layer keys to the Voyager's spare keys: add a slot to
+  `LAYOUT_miryoku`, add a token to each `*_VOYAGER` macro.
+
+**Voyager gaming layer (EXTRA slot).** The unused `EXTRA` layer is repurposed
+(Voyager only) as a plain full-QWERTY base — no home-row mods, no layer-taps:
+- `MIRYOKU_ALTERNATIVES_GAME_VOYAGER` (+ `U_EXTRAS_GAME`) uses all 52 keys:
+  numbers on the top row, `Esc/Tab/LShift/LCtrl` (left pinky col) + `fn/RShift`
+  and the exit tap-dance (right pinky col), plain alphas, `Space/LGUI` +
+  `MS_BTN1/MS_BTN2` on the thumbs.
+- **Enter** via `U_GAME_SWITCH` = `TD(U_TD_U_EXTRA)` (double-tap → EXTRA becomes
+  the default base), placed at slot `[7]` on MEDIA/FUN, next to the MOUSE-layer
+  switch. `U_GAME_SWITCH` is `U_NA` on non-Voyager boards, so the shared
+  `*_SWEEP`/`*_NIKROULAH` MEDIA/FUN macros stay byte-identical there. **Exit**
+  via `TD(U_TD_U_BASE)` on the right pinky bottom (`E8`).
+- **fn key** (`E6`, the old backslash slot) = `MO(U_TAP)`. The **TAP slot** is
+  repurposed (Voyager only) as the gaming fn layer
+  (`MIRYOKU_ALTERNATIVES_GAMEFN_VOYAGER` + `U_EXTRAS_FN`): hold it and the number
+  row → F-keys (`1..0`→`F1..F10`, `-`→`F11`, `Esc`→`F12`); everything else is
+  `KC_TRNS` so it falls through to the gaming layer. Backslash was dropped.
+- **Auto Shift is disabled** on this layer via `default_layer_state_set_user` in
+  `nikroulah.c` (checks `get_highest_layer(state) == U_EXTRA`; inert on
+  skeletyl/sweep, where EXTRA is never a default layer).
 
 ## Gotchas
 
@@ -353,10 +375,10 @@ extra per-layer slots** (`E0..E8`) rather than fixing keycodes onto them:
   Shifts A+' together) and a `CW_TOGG` key on the BUTTON layer's V and M keys.
   Active: mod-taps/layer-taps (`TAPPING_TERM 200`, default mod-tap-interrupt,
   `QUICK_TAP_TERM 0`), **Chordal Hold** + **Permissive Hold** on the home-row
-  mods (see layout), **Flow Tap** (`FLOW_TAP_TERM 150`), Auto Shift on
+  mods (see layout), **Flow Tap** (`FLOW_TAP_TERM 100`), Auto Shift on
   non-alphas, mouse keys, media keys.
-- **Flow Tap** (`#define FLOW_TAP_TERM 150` in `config.h`): a mod-tap/layer-tap
-  pressed within 150 ms of the preceding key forces its *tap* (both keys must be
+- **Flow Tap** (`#define FLOW_TAP_TERM 100` in `config.h`): a mod-tap/layer-tap
+  pressed within 100 ms of the preceding key forces its *tap* (both keys must be
   in the QWERTY default set: alphas, `,./;` or Space). Kills accidental mods
   during fast typing and cuts tap latency. Complements Chordal Hold (same-hand
   rolls) by also catching fast cross-hand rolls via inter-key timing; suppressed
