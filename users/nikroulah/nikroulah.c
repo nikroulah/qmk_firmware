@@ -85,6 +85,47 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record,
 }
 
 
+// Flow Tap per-key tuning.
+#if defined(FLOW_TAP_TERM)
+// The default set omits KC_QUOT; our right pinky home is ' (a home-row Shift), so
+// add it so Flow Tap treats it like the other alphas (as current or previous key).
+bool is_flow_tap_key(uint16_t keycode) {
+  if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
+    return false; // disable Flow Tap on hotkeys
+  }
+  switch (get_tap_keycode(keycode)) {
+    case KC_SPC:
+    case KC_A ... KC_Z:
+    case KC_DOT:
+    case KC_COMM:
+    case KC_SCLN:
+    case KC_SLSH:
+    case KC_QUOT:
+      return true;
+  }
+  return false;
+}
+
+// Tighter 50ms window on the home-row Shift mod-taps and the NUM/SYM letter-hold
+// layer-taps; everything else keeps the 100ms FLOW_TAP_TERM. Returning 0 (both
+// keys not flow-tap keys) disables Flow Tap, same as the default.
+uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_keycode) {
+  if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {
+    switch (keycode) {
+      case LSFT_T(KC_A):
+      case RSFT_T(KC_QUOT):
+      case LT(U_SYM, KC_Q):
+      case LT(U_NUM, KC_T):
+        return 50;
+      default:
+        return FLOW_TAP_TERM;
+    }
+  }
+  return 0;
+}
+#endif // FLOW_TAP_TERM
+
+
 // shift functions
 
 const key_override_t capsword_key_override = ko_make_basic(MOD_MASK_SHIFT, CW_TOGG, KC_CAPS);
@@ -133,6 +174,8 @@ combo_t key_combos[COMBO_COUNT] = {
 // normal keyboard -- a held key repeats, it does not send the shifted form. The
 // gaming layer only ever exists (and only EXTRA is ever a default layer) on the
 // Voyager, so this hook is inert on the skeletyl/sweep.
+// WIP: while the gaming layer is unwired (EXTRA never becomes a default layer),
+// this hook is inert everywhere -- kept so it works when the layer is restored.
 layer_state_t default_layer_state_set_user(layer_state_t state) {
   if (get_highest_layer(state) == U_EXTRA) {
     autoshift_disable();
