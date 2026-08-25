@@ -346,8 +346,12 @@ onto them:
 - To add per-layer keys to the Voyager's spare keys: add a slot to
   `LAYOUT_miryoku`, add a token to each `*_VOYAGER` macro.
 
-**Voyager gaming layer (EXTRA slot).** The unused `EXTRA` layer is repurposed
-(Voyager only) as a plain full-QWERTY base — no home-row mods, no layer-taps:
+**Voyager gaming layer (EXTRA slot) — WIP, not wired in.** The macros below are
+defined but currently **unreachable**: `U_GAME_SWITCH` is `U_NA` and the Voyager
+`EXTRA`/`TAP` slots point at `VOYAGER_BLANK`. To re-enable, restore
+`U_GAME_SWITCH` to `TD(U_TD_U_EXTRA)` (Voyager-guarded) and point `EXTRA`/`TAP`
+back at the `GAME`/`GAMEFN` macros. Design (Voyager only, plain full-QWERTY base,
+no home-row mods, no layer-taps):
 - `MIRYOKU_ALTERNATIVES_GAME_VOYAGER` (+ `U_EXTRAS_GAME`) uses all 52 keys:
   numbers on the top row (right pinky = Backspace), `Esc/Tab/LShift/LCtrl` (left
   pinky col) + `fn/RShift` and the exit tap-dance (right pinky col), plain alphas,
@@ -379,12 +383,17 @@ onto them:
   mods (see layout), **Flow Tap** (`FLOW_TAP_TERM 100`), Auto Shift on
   non-alphas, mouse keys, media keys.
 - **Flow Tap** (`#define FLOW_TAP_TERM 100` in `config.h`): a mod-tap/layer-tap
-  pressed within 100 ms of the preceding key forces its *tap* (both keys must be
-  in the QWERTY default set: alphas, `,./;` or Space). Kills accidental mods
-  during fast typing and cuts tap latency. Complements Chordal Hold (same-hand
-  rolls) by also catching fast cross-hand rolls via inter-key timing; suppressed
-  while a tap-hold is undecided, so mod chording still works. Applies to all
-  three boards. Bumped AVR firmware ~0.7 KB (skeletyl now ~93%).
+  pressed within the term of the preceding key forces its *tap* (both keys must be
+  flow-tap keys: alphas, `,./;`, Space, or `'`). Kills accidental mods during fast
+  typing and cuts tap latency. Complements Chordal Hold (same-hand rolls) by also
+  catching fast cross-hand rolls via inter-key timing; suppressed while a tap-hold
+  is undecided, so mod chording still works. Applies to all three boards.
+- **Per-key Flow Tap** (`get_flow_tap_term()`/`is_flow_tap_key()` in `nikroulah.c`):
+  base term is 100 ms, but a tighter **50 ms** applies to the home-row Shift
+  mod-taps (`LSFT_T(KC_A)`, `RSFT_T(KC_QUOT)`) and the NUM/SYM letter-hold
+  layer-taps (`LT(U_SYM,KC_Q)`, `LT(U_NUM,KC_T)`). `is_flow_tap_key()` is also
+  overridden to add `KC_QUOT` (our right-pinky home `'`), which the QMK default
+  set omits — without it the right Shift would get no Flow Tap at all.
 
 ## Updating QMK
 

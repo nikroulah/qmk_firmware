@@ -40,15 +40,18 @@
 // Chordal Hold, so Permissive Hold can't reintroduce same-hand accidental mods.)
 #define PERMISSIVE_HOLD
 
-// Flow Tap: when a mod-tap/layer-tap is pressed within 150ms of the preceding
-// key (and both are alphas/,./;/ or Space -- the QWERTY default set), force its
-// TAP. This kills accidental mods during fast typing and cuts tap latency (the
-// tap is sent immediately). Complements Chordal Hold: same-hand rolls are still
-// caught by Chordal Hold, and Flow Tap additionally catches fast cross-hand
-// rolls by inter-key timing. Deliberate mod use still works -- Flow Tap is
-// suppressed while a tap-hold key is undecided, so mod chording is unaffected.
-// 100ms (QMK suggests 150 as a starting point; tuned down to 100). Applies to
-// all three boards.
+// Flow Tap: when a mod-tap/layer-tap is pressed within FLOW_TAP_TERM ms of the
+// preceding key (and both are alphas/,./;/'/Space -- the QWERTY default set plus
+// our KC_QUOT), force its TAP. This kills accidental mods during fast typing and
+// cuts tap latency (the tap is sent immediately). Complements Chordal Hold:
+// same-hand rolls are still caught by Chordal Hold, and Flow Tap additionally
+// catches fast cross-hand rolls by inter-key timing. Deliberate mod use still
+// works -- Flow Tap is suppressed while a tap-hold key is undecided, so mod
+// chording is unaffected.
+// 100ms base (QMK suggests 150 as a starting point; tuned down to 100). A tighter
+// 50ms per-key override applies to the home-row Shift mod-taps and the NUM/SYM
+// letter-hold layer-taps -- see get_flow_tap_term()/is_flow_tap_key() in
+// nikroulah.c. Applies to all three boards.
 #define FLOW_TAP_TERM 100
 
 // Mouse keys: constant-speed mode with momentary acceleration. No acceleration
@@ -87,11 +90,11 @@
 // slots (num/sym are on Q/W letter-holds), so they point at a blank layer -- the
 // Voyager's blank still carries the 9 inert extra slots.
 #if defined(KEYBOARD_zsa_voyager)
-  // EXTRA is repurposed as a plain "gaming" base layer (reached by the
-  // U_GAME_SWITCH tap-dance on MEDIA/FUN). TAP is its momentary fn layer, held
-  // via MO(U_TAP) from the gaming layer to reach the F-keys.
-  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_GAME_VOYAGER
-  #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_GAMEFN_VOYAGER
+  // EXTRA/TAP are blank for now. They are the home of the WIP "gaming" layer +
+  // its fn layer (MIRYOKU_ALTERNATIVES_GAME_VOYAGER / _GAMEFN_VOYAGER), which is
+  // not wired in yet -- point these back at the GAME/GAMEFN macros to re-enable.
+  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_VOYAGER_BLANK
+  #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_VOYAGER_BLANK
   #define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_VOYAGER
   #define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER
   #define MIRYOKU_LAYER_NAV    MIRYOKU_ALTERNATIVES_NAV_VOYAGER

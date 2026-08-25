@@ -169,11 +169,12 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 // TOGGLE_LAYER_COLOR / RM_* / the gaming keys are only expanded in the Voyager build.
 // ============================================================================
 
-#if defined(KEYBOARD_zsa_voyager)
-#    define U_GAME_SWITCH TD(U_TD_U_EXTRA)   // double-tap -> gaming layer is default base
-#else
-#    define U_GAME_SWITCH U_NA
-#endif
+// WIP: the "gaming" layer (below) is not wired into the layout for now. Its
+// enter-switch is neutralized to U_NA everywhere, so the MEDIA/FUN [7] slot is
+// blank on every board. To re-enable on the Voyager, restore this to
+// TD(U_TD_U_EXTRA) under a KEYBOARD_zsa_voyager guard and point the Voyager
+// EXTRA/TAP slots back at the GAME/GAMEFN macros (see users/nikroulah/config.h).
+#define U_GAME_SWITCH U_NA
 
 #define U_EXTRAS_BLANK  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
 #define U_EXTRAS_RGB    RM_VALD, RM_VALU, RM_HUED, RM_HUEU, RM_SATD, RM_SATU, RM_NEXT, TOGGLE_LAYER_COLOR, RM_TOGG,  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
@@ -198,6 +199,12 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 #define MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER  MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH, U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_VOYAGER_BLANK   MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK,  U_EXTRAS_BLANK
 
+// ==== WIP: gaming layer (NOT wired into the layout for now) ====
+// The two macros below are defined but currently unused -- U_GAME_SWITCH is U_NA
+// (above) and the Voyager EXTRA/TAP slots point at VOYAGER_BLANK
+// (users/nikroulah/config.h), so this layer is unreachable. Kept here to finish
+// later; see the re-enable note on U_GAME_SWITCH.
+//
 // Gaming base layer (Voyager EXTRA slot): plain full QWERTY -- no home-row mods,
 // no layer-taps. Dedicated mods on the pinky columns/thumb; mouse buttons on the
 // right thumbs; numbers on the top row. Exit via the tap-dance on the right pinky
