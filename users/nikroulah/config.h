@@ -90,10 +90,9 @@
 // slots (num/sym are on Q/W letter-holds), so they point at a blank layer -- the
 // Voyager's blank still carries the 9 inert extra slots.
 #if defined(KEYBOARD_zsa_voyager)
-  // EXTRA/TAP are blank for now. They are the home of the WIP "gaming" layer +
-  // its fn layer (MIRYOKU_ALTERNATIVES_GAME_VOYAGER / _GAMEFN_VOYAGER), which is
-  // not wired in yet -- point these back at the GAME/GAMEFN macros to re-enable.
-  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_VOYAGER_BLANK
+  // EXTRA is the "gaming" layer (MIRYOKU_ALTERNATIVES_GAME_VOYAGER = BASE + a
+  // number row), reached via U_GAME_SWITCH on MEDIA/FUN [7]. TAP is unused.
+  #define MIRYOKU_LAYER_EXTRA  MIRYOKU_ALTERNATIVES_GAME_VOYAGER
   #define MIRYOKU_LAYER_TAP    MIRYOKU_ALTERNATIVES_VOYAGER_BLANK
   #define MIRYOKU_LAYER_BASE   MIRYOKU_ALTERNATIVES_BASE_VOYAGER
   #define MIRYOKU_LAYER_BUTTON MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER

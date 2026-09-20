@@ -159,9 +159,9 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 //   E15/E16/E17 -> left outer (6th) column, the three finger rows
 // Each Voyager layer = the matching SWEEP layer + its 18 extras. Uses so far:
 //   - MEDIA: RGB controls on the right-side extras (E0..E8); left extras inert.
-//   - EXTRA (repurposed as a "gaming" base layer): a plain full QWERTY that uses
-//     ALL the extras -- numbers on the top row, esc/tab/shift/ctrl and
-//     -/\/rshift on the pinky columns. See U_EXTRAS_GAME / GAME_VOYAGER below.
+//   - EXTRA (the "gaming" base layer): the top-row extras become a number row
+//     (1..6 left, 7 8 9 0 - = right); pinky-column extras inert, like BASE. See
+//     U_EXTRAS_GAME / GAME_VOYAGER below.
 // Every other layer leaves the extras inert (U_NA).
 // U_GAME_SWITCH is the tap-dance that makes the gaming layer the default base;
 // it sits next to the MOUSE-layer switch on MEDIA/FUN. It resolves to U_NA on
@@ -169,25 +169,24 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 // TOGGLE_LAYER_COLOR / RM_* / the gaming keys are only expanded in the Voyager build.
 // ============================================================================
 
-// WIP: the "gaming" layer (below) is not wired into the layout for now. Its
-// enter-switch is neutralized to U_NA everywhere, so the MEDIA/FUN [7] slot is
-// blank on every board. To re-enable on the Voyager, restore this to
-// TD(U_TD_U_EXTRA) under a KEYBOARD_zsa_voyager guard and point the Voyager
-// EXTRA/TAP slots back at the GAME/GAMEFN macros (see users/nikroulah/config.h).
-#define U_GAME_SWITCH U_NA
+// Enter-switch for the "gaming" layer (the EXTRA slot). Sits at MEDIA/FUN slot
+// [7], next to the MOUSE-layer switch; double-tap makes the gaming layer the
+// default base. Return to the normal BASE via TD(U_TD_U_BASE) on the MOUSE layer.
+// U_NA on non-Voyager boards, so the shared MEDIA/FUN macros stay byte-identical
+// there (the gaming layer only exists on the Voyager).
+#if defined(KEYBOARD_zsa_voyager)
+#    define U_GAME_SWITCH TD(U_TD_U_EXTRA)
+#else
+#    define U_GAME_SWITCH U_NA
+#endif
 
 #define U_EXTRAS_BLANK  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
 #define U_EXTRAS_RGB    RM_VALD, RM_VALU, RM_HUED, RM_HUEU, RM_SATD, RM_SATU, RM_NEXT, TOGGLE_LAYER_COLOR, RM_TOGG,  U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
-// Gaming layer extras: E0..E5 = numbers 6..0 + Backspace (right top row); E6..E8 =
-// fn (momentary TAP layer, holds for F-keys), RShift, tap-dance back to BASE
-// (right pinky column); E9..E14 = Esc + numbers 1..5 (left top row); E15..E17 =
-// Tab, LShift, LCtrl (left pinky column). E6 replaces the dropped backslash.
-#define U_EXTRAS_GAME   KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,  MO(U_TAP), KC_RSFT, TD(U_TD_U_BASE),  KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5,  KC_TAB, KC_LSFT, KC_LCTL
-// Gaming fn-layer extras (the TAP slot, held via MO(U_TAP) from the gaming
-// layer): the number row becomes F-keys -- 1..0 -> F1..F10, Esc -> F12; the
-// Backspace key (E5) becomes LGUI. Everything else is KC_TRNS so it falls through
-// to the gaming layer (WASD, mods, thumbs, mouse buttons still work while fn held).
-#define U_EXTRAS_FN     KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_LGUI,  KC_TRNS, KC_TRNS, KC_TRNS,  KC_F12, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,  KC_TRNS, KC_TRNS, KC_TRNS
+// Gaming layer extras: a number row on the Voyager's spare top-row keys.
+// E0..E5 = right-hand top row (inner->outer) = 7 8 9 0 - = ; E9..E14 = left-hand
+// top row (outer->inner) = 1 2 3 4 5 6. The outer pinky columns (E6..E8, E15..E17)
+// stay blank, matching the base layer.
+#define U_EXTRAS_GAME   KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL,  U_NA, U_NA, U_NA,  KC_1, KC_2, KC_3, KC_4, KC_5, KC_6,  U_NA, U_NA, U_NA
 
 #define MIRYOKU_ALTERNATIVES_BASE_VOYAGER    MIRYOKU_ALTERNATIVES_BASE_SWEEP,       U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_NAV_VOYAGER     MIRYOKU_ALTERNATIVES_NAV_SWEEP,        U_EXTRAS_BLANK
@@ -199,30 +198,9 @@ U_NP,              U_NP,              U_NP,              U_NA,              KC_P
 #define MIRYOKU_ALTERNATIVES_BUTTON_VOYAGER  MIRYOKU_ALTERNATIVES_BUTTON_NIKROULAH, U_EXTRAS_BLANK
 #define MIRYOKU_ALTERNATIVES_VOYAGER_BLANK   MIRYOKU_ALTERNATIVES_NIKROULAH_BLANK,  U_EXTRAS_BLANK
 
-// ==== WIP: gaming layer (NOT wired into the layout for now) ====
-// The two macros below are defined but currently unused -- U_GAME_SWITCH is U_NA
-// (above) and the Voyager EXTRA/TAP slots point at VOYAGER_BLANK
-// (users/nikroulah/config.h), so this layer is unreachable. Kept here to finish
-// later; see the re-enable note on U_GAME_SWITCH.
-//
-// Gaming base layer (Voyager EXTRA slot): plain full QWERTY -- no home-row mods,
-// no layer-taps. Dedicated mods on the pinky columns/thumb; mouse buttons on the
-// right thumbs; numbers on the top row. Exit via the tap-dance on the right pinky
-// bottom (E8 -> TD(U_TD_U_BASE)). Auto Shift is disabled on this layer in
-// nikroulah.c (default_layer_state_set_user).
-#define MIRYOKU_ALTERNATIVES_GAME_VOYAGER \
-KC_Q,              KC_W,              KC_E,              KC_R,              KC_T,              KC_Y,              KC_U,              KC_I,              KC_O,              KC_P,              \
-KC_A,              KC_S,              KC_D,              KC_F,              KC_G,              KC_H,              KC_J,              KC_K,              KC_L,              KC_SCLN,           \
-KC_Z,              KC_X,              KC_C,              KC_V,              KC_B,              KC_N,              KC_M,              KC_COMM,           KC_DOT,            KC_SLSH,           \
-U_NP,              U_NP,              U_NP,              KC_SPC,            KC_LALT,           MS_BTN1,           MS_BTN2,           U_NP,              U_NP,              U_NP,              \
-U_EXTRAS_GAME
-
-// Gaming fn layer (Voyager TAP slot), held via MO(U_TAP) from the gaming layer.
-// The whole 40-key Miryoku block is KC_TRNS so it falls through to the gaming
-// layer; only the top-row extras become F-keys (see U_EXTRAS_FN).
-#define MIRYOKU_ALTERNATIVES_GAMEFN_VOYAGER \
-KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           \
-KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           \
-KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           \
-U_NP,              U_NP,              U_NP,              KC_TRNS,           KC_TRNS,           KC_TRNS,           KC_TRNS,           U_NP,              U_NP,              U_NP,              \
-U_EXTRAS_FN
+// Gaming layer (Voyager EXTRA slot): identical to the BASE layer (home-row mods,
+// letter-hold + thumb layer-taps, all of it) PLUS a number row on the Voyager's
+// spare top-row keys (1..6 left hand, 7 8 9 0 - = right hand -- see U_EXTRAS_GAME).
+// Enter via U_GAME_SWITCH on MEDIA/FUN [7]; exit via TD(U_TD_U_BASE) on MOUSE.
+// Not yet flash-tested.
+#define MIRYOKU_ALTERNATIVES_GAME_VOYAGER    MIRYOKU_ALTERNATIVES_BASE_SWEEP, U_EXTRAS_GAME
