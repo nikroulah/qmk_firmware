@@ -346,30 +346,24 @@ onto them:
 - To add per-layer keys to the Voyager's spare keys: add a slot to
   `LAYOUT_miryoku`, add a token to each `*_VOYAGER` macro.
 
-**Voyager gaming layer (EXTRA slot) — WIP, not wired in.** The macros below are
-defined but currently **unreachable**: `U_GAME_SWITCH` is `U_NA` and the Voyager
-`EXTRA`/`TAP` slots point at `VOYAGER_BLANK`. To re-enable, restore
-`U_GAME_SWITCH` to `TD(U_TD_U_EXTRA)` (Voyager-guarded) and point `EXTRA`/`TAP`
-back at the `GAME`/`GAMEFN` macros. Design (Voyager only, plain full-QWERTY base,
-no home-row mods, no layer-taps):
-- `MIRYOKU_ALTERNATIVES_GAME_VOYAGER` (+ `U_EXTRAS_GAME`) uses all 52 keys:
-  numbers on the top row (right pinky = Backspace), `Esc/Tab/LShift/LCtrl` (left
-  pinky col) + `fn/RShift` and the exit tap-dance (right pinky col), plain alphas,
-  `Space/LAlt` + `MS_BTN1/MS_BTN2` on the thumbs.
+**Voyager gaming layer (EXTRA slot).** A Voyager-only base layer that is
+**identical to BASE** (home-row mods, letter-hold + thumb layer-taps, Auto Shift,
+all of it) **plus a number row** on the spare top-row keys. Not yet flash-tested.
+- `MIRYOKU_ALTERNATIVES_GAME_VOYAGER` = `MIRYOKU_ALTERNATIVES_BASE_SWEEP` +
+  `U_EXTRAS_GAME`. The number row: `1 2 3 4 5 6` on the left-hand top row, `7 8 9
+  0 - =` on the right-hand top row (the outer pinky columns stay blank, like BASE).
 - **Enter** via `U_GAME_SWITCH` = `TD(U_TD_U_EXTRA)` (double-tap → EXTRA becomes
   the default base), placed at slot `[7]` on MEDIA/FUN, next to the MOUSE-layer
   switch. `U_GAME_SWITCH` is `U_NA` on non-Voyager boards, so the shared
-  `*_SWEEP`/`*_NIKROULAH` MEDIA/FUN macros stay byte-identical there. **Exit**
-  via `TD(U_TD_U_BASE)` on the right pinky bottom (`E8`).
-- **fn key** (`E6`, the old backslash slot) = `MO(U_TAP)`. The **TAP slot** is
-  repurposed (Voyager only) as the gaming fn layer
-  (`MIRYOKU_ALTERNATIVES_GAMEFN_VOYAGER` + `U_EXTRAS_FN`): hold it and the number
-  row → F-keys (`1..0`→`F1..F10`, `Esc`→`F12`), and the Backspace key → `LGUI`;
-  everything else is `KC_TRNS` so it falls through to the gaming layer. Backslash
-  was dropped.
-- **Auto Shift is disabled** on this layer via `default_layer_state_set_user` in
-  `nikroulah.c` (checks `get_highest_layer(state) == U_EXTRA`; inert on
-  skeletyl/sweep, where EXTRA is never a default layer).
+  `*_SWEEP`/`*_NIKROULAH` MEDIA/FUN macros stay byte-identical there. **Exit** via
+  the standard `TD(U_TD_U_BASE)` on the MOUSE layer (reached the same way as from
+  BASE).
+- **Auto Shift is disabled** while this layer is the default base, via
+  `default_layer_state_set_user` in `nikroulah.c` (checks
+  `get_highest_layer(state) == U_EXTRA`) — so the number row types digits when
+  held, not their shifted symbols. Inert on skeletyl/sweep (EXTRA never a default
+  layer there). Everything else is inherited from BASE. (The old plain-QWERTY
+  gaming layer + its fn layer were removed when this was redefined.)
 
 ## Gotchas
 

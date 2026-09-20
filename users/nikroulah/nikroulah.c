@@ -126,6 +126,21 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_
 #endif // FLOW_TAP_TERM
 
 
+// Disable Auto Shift while the Voyager "gaming" layer (EXTRA slot) is the default
+// base -- its number row should type digits when held, not their shifted symbols.
+// The gaming layer is entered by TD(U_TD_U_EXTRA) (default_layer_set), so this
+// keys off the default layer. EXTRA is only ever a default layer on the Voyager,
+// so this hook is inert on the skeletyl/sweep.
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+  if (get_highest_layer(state) == U_EXTRA) {
+    autoshift_disable();
+  } else {
+    autoshift_enable();
+  }
+  return state;
+}
+
+
 // shift functions
 
 const key_override_t capsword_key_override = ko_make_basic(MOD_MASK_SHIFT, CW_TOGG, KC_CAPS);
@@ -167,23 +182,6 @@ combo_t key_combos[COMBO_COUNT] = {
   COMBO(thumbcombos_fun, KC_APP)
 };
 #endif
-
-
-// Disable Auto Shift on the Voyager "gaming" layer (the EXTRA slot, made the
-// default base by TD(U_TD_U_EXTRA)). Its number/symbol keys should behave like a
-// normal keyboard -- a held key repeats, it does not send the shifted form. The
-// gaming layer only ever exists (and only EXTRA is ever a default layer) on the
-// Voyager, so this hook is inert on the skeletyl/sweep.
-// WIP: while the gaming layer is unwired (EXTRA never becomes a default layer),
-// this hook is inert everywhere -- kept so it works when the layer is restored.
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-  if (get_highest_layer(state) == U_EXTRA) {
-    autoshift_disable();
-  } else {
-    autoshift_enable();
-  }
-  return state;
-}
 
 
 // qmk_viewer live indicator (https://github.com/thooams/qmk_viewer)
