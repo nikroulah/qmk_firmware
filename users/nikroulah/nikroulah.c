@@ -63,21 +63,45 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 }
 
 // Apply the Chordal Hold opposite-hands rule to ALL home-row mod-taps (both
-// hands). Returning the default (true iff opposite hands) makes same-hand chords
-// settle as taps. Only A/' get the longer 350ms term above; the other mods use
-// the normal 200ms TAPPING_TERM. Layer-taps (thumbs, Q/T/Z letter holds) return
-// true => unaffected, normal tap/hold.
+// hands). Returning get_chordal_hold_default (true iff opposite hands) defers an
+// opposite-hand chord to Permissive Hold / the 350ms term; returning false forces
+// a tap and bypasses Permissive Hold. Same-hand chords already tap via the
+// default. The two Shift keys carry per-chord tap exceptions so fast cross-hand
+// rolls don't capitalize:
+//   - A + Space      -> always a tap (never Shift+Space).
+//   - A + right index (Y U H J N M) within 25ms -> a tap.
+//   - ' + left index (R T F G V B) within 25ms  -> a tap.
+// A deliberate capital still works: hold the Shift, or press the letter after the
+// 25ms window. Layer-taps (thumbs, Q/T/Z letter holds) return true => unaffected.
 bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record,
                       uint16_t other_keycode, keyrecord_t *other_record) {
   switch (tap_hold_keycode) {
     case LSFT_T(KC_A):
+      switch (get_tap_keycode(other_keycode)) {
+        case KC_SPC:
+          return false;
+        case KC_Y: case KC_U: case KC_H: case KC_J: case KC_N: case KC_M:
+          if (TIMER_DIFF_16(other_record->event.time, tap_hold_record->event.time) < 25) {
+            return false;
+          }
+          break;
+      }
+      return get_chordal_hold_default(tap_hold_record, other_record);
+    case RSFT_T(KC_QUOT):
+      switch (get_tap_keycode(other_keycode)) {
+        case KC_R: case KC_T: case KC_F: case KC_G: case KC_V: case KC_B:
+          if (TIMER_DIFF_16(other_record->event.time, tap_hold_record->event.time) < 25) {
+            return false;
+          }
+          break;
+      }
+      return get_chordal_hold_default(tap_hold_record, other_record);
     case LCTL_T(KC_S):
     case LALT_T(KC_D):
     case LGUI_T(KC_F):
     case RGUI_T(KC_J):
     case RALT_T(KC_K):
     case RCTL_T(KC_L):
-    case RSFT_T(KC_QUOT):
       return get_chordal_hold_default(tap_hold_record, other_record);
     default:
       return true;
@@ -106,7 +130,7 @@ bool is_flow_tap_key(uint16_t keycode) {
   return false;
 }
 
-// Tighter 50ms window on the home-row Shift mod-taps and the NUM/SYM letter-hold
+// Tighter 25ms window on the home-row Shift mod-taps and the NUM/SYM letter-hold
 // layer-taps; everything else keeps the 100ms FLOW_TAP_TERM. Returning 0 (both
 // keys not flow-tap keys) disables Flow Tap, same as the default.
 uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_keycode) {
@@ -116,7 +140,7 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_
       case RSFT_T(KC_QUOT):
       case LT(U_SYM, KC_Q):
       case LT(U_NUM, KC_T):
-        return 50;
+        return 25;
       default:
         return FLOW_TAP_TERM;
     }

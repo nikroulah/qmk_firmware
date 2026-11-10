@@ -38,6 +38,9 @@
 // press/release, NOT the tapping term, so the 350ms A/' term below no longer
 // delays cross-hand capitals. (Same-hand rolls are still forced to taps by
 // Chordal Hold, so Permissive Hold can't reintroduce same-hand accidental mods.)
+// get_chordal_hold() carves out per-chord tap exceptions on the two Shift keys to
+// suppress Permissive Hold on fast cross-hand rolls: A+Space always taps, and an
+// opposite-hand index key within 25ms of a Shift taps (see nikroulah.c).
 #define PERMISSIVE_HOLD
 
 // Flow Tap: when a mod-tap/layer-tap is pressed within FLOW_TAP_TERM ms of the
@@ -49,7 +52,7 @@
 // works -- Flow Tap is suppressed while a tap-hold key is undecided, so mod
 // chording is unaffected.
 // 100ms base (QMK suggests 150 as a starting point; tuned down to 100). A tighter
-// 50ms per-key override applies to the home-row Shift mod-taps and the NUM/SYM
+// 25ms per-key override applies to the home-row Shift mod-taps and the NUM/SYM
 // letter-hold layer-taps -- see get_flow_tap_term()/is_flow_tap_key() in
 // nikroulah.c. Applies to all three boards.
 #define FLOW_TAP_TERM 100
